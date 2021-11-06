@@ -288,6 +288,7 @@ mod tests {
         assert!(calc.eval("2 3").is_err());
         assert!(calc.eval("2 + + 3").is_err());
         assert!(calc.eval("( 1 + 2 ) ( 3 + 4 )").is_err());
+        assert!(calc.eval("1 + ) 3 + 4 ( + 5").is_err());
         assert!(calc.eval("( 1 + 2 ) )").is_err());
         assert!(calc.eval("( + ) * 3").is_err());
     }
