@@ -1,0 +1,16 @@
+[package]
+name = "Calculator"
+version = "0.1.0"
+authors = ["xryuseix"]
+edition = "2018"
+default-run = "main"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.40"
+clap = "=3.0.0-beta.2"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
