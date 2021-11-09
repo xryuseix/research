@@ -29,11 +29,12 @@ jobs:
           cd problem/calculator && wasm-pack build
           cd ../../pages && yarn install
           cp -r ../problem/calculator/pkg/ node_modules/calculator/
-      - name: Build & Deploy
+      - name: Build
         run: cd pages && yarn build
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: pages/public
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
