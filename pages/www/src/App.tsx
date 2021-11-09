@@ -2,7 +2,7 @@
 
 import React from "react";
 import * as wasm from "calculator";
-import "./App.css"
+import "./App.css";
 
 type Props = {
   title: string;
@@ -30,17 +30,13 @@ class NameForm extends React.Component<{}, State> {
 
   render() {
     return (
-      <div>
-        <div>
-          <input
-            type="text"
-            value={this.state.formula}
-            onChange={this.handleChange}
-          />
-        </div>
-        <h2>
-          {this.state.formula} {this.state.equal} {this.state.ans}
-        </h2>
+      <div className="formula">
+        <input
+          type="text"
+          value={this.state.formula}
+          onChange={this.handleChange}
+        />
+        {this.state.equal} {this.state.ans}
       </div>
     );
   }

@@ -1,3 +1,11 @@
 /** @format */
 
+.formula > input {
+    margin: 10px;
+}
 
+.formula, .formula > input {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Meiryo';
+}

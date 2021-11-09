@@ -16,13 +16,13 @@
     "style-loader": "^3.3.1"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
     "start": "webpack-cli serve --mode development",
-    "start2": "webpack-dev-server"
+    "build": "webpack --config webpack.config.js --mode=production",
+    "deploy": "yarn build && gh-pages -d public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rustwasm/create-wasm-app.git"
+    "url": "https://github.com/xryuseix/research"
   },
   "keywords": [
     "webassembly",
@@ -33,11 +33,12 @@
   "author": "Ashley Williams <ashley666ashley@gmail.com>",
   "license": "(MIT OR Apache-2.0)",
   "bugs": {
-    "url": "https://github.com/rustwasm/create-wasm-app/issues"
+    "url": "https://github.com/xryuseix/research/issues"
   },
-  "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
+  "homepage": "https://xryuseix.github.io/research",
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.0",
+    "gh-pages": "^3.2.3",
     "hello-wasm-pack": "^0.1.0",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.2.6",
