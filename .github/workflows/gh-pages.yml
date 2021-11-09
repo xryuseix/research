@@ -30,4 +30,10 @@ jobs:
           cd ../../pages && yarn install
           cp -r ../problem/calculator/pkg/ node_modules/calculator/
       - name: Build & Deploy
-        run: yarn build && gh-pages -d public
+        run: cd pages && yarn build
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
