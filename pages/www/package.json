@@ -10,8 +10,10 @@
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "calculator": "file:../pkg",
+    "css-loader": "^6.5.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "style-loader": "^3.3.1"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
