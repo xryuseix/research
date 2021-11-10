@@ -8,7 +8,7 @@ impl RpnCalculator {
         Self(verbose)
     }
 
-    pub fn eval(&self, tokens_input: &Vec<&str>) -> Result<i32> {
+    pub fn eval(&self, tokens_input: &Vec<&str>) -> Result<i64> {
         let mut tokens = tokens_input.clone();
         tokens.reverse();
         let mut stack = Vec::new();
@@ -17,7 +17,7 @@ impl RpnCalculator {
         while let Some(token) = tokens.pop() {
             pos += 1;
 
-            if let Ok(x) = token.parse::<i32>() {
+            if let Ok(x) = token.parse::<i64>() {
                 stack.push(x);
             } else if stack.len() >= 2 {
                 let y = stack.pop().expect("invalid syntax");
@@ -35,8 +35,6 @@ impl RpnCalculator {
             } else {
                 bail!("invalid syntax at {}", pos);
             }
-
-            // `-v`オプションが指定されている場合は、この時点でのトークンとスタックの状態を出力
             if self.0 {
                 println!("{:?} {:?}", tokens, stack);
             }
@@ -51,13 +49,13 @@ impl RpnCalculator {
 }
 
 struct Calculator<'a> {
-    priority: HashMap<&'a str, i32>,
+    priority: HashMap<&'a str, i64>,
     verbose: bool,
 }
 
 impl<'a> Calculator<'a> {
     pub fn new(verbose: bool) -> Self {
-        let priority: HashMap<&'a str, i32> = [
+        let priority: HashMap<&'a str, i64> = [
             ("*", 1),
             ("/", 1),
             ("%", 1),
@@ -72,7 +70,7 @@ impl<'a> Calculator<'a> {
         Self { priority, verbose }
     }
 
-    pub fn eval(&self, formula: &str) -> Result<i32> {
+    pub fn eval(&self, formula: &str) -> Result<i64> {
         let mut tokens = formula.split_whitespace().collect::<Vec<_>>();
         self.eval_inner(&mut tokens)
     }
@@ -94,8 +92,8 @@ impl<'a> Calculator<'a> {
         for pos in 0..(tokens.len() - 1) {
             let x = tokens[pos];
             let y = tokens[pos + 1];
-            let is_x_num = x.parse::<i32>().is_ok();
-            let is_y_num = y.parse::<i32>().is_ok();
+            let is_x_num = x.parse::<i64>().is_ok();
+            let is_y_num = y.parse::<i64>().is_ok();
             if is_x_num && is_y_num {
                 // 数値 数値の時
                 return Ok((false, pos));
@@ -122,7 +120,7 @@ impl<'a> Calculator<'a> {
                 if pos == tokens.len() - 1 {
                     // 末尾に"("はない
                     return Ok((false, pos));
-                } else if tokens[pos + 1] != "(" && tokens[pos + 1].parse::<i32>().is_err() {
+                } else if tokens[pos + 1] != "(" && tokens[pos + 1].parse::<i64>().is_err() {
                     // "("の後ろは"("または数値である
                     return Ok((false, pos));
                 }
@@ -131,7 +129,7 @@ impl<'a> Calculator<'a> {
                 if pos == 0 {
                     // 先頭に")"はない
                     return Ok((false, pos));
-                } else if tokens[pos - 1] != ")" && tokens[pos - 1].parse::<i32>().is_err() {
+                } else if tokens[pos - 1] != ")" && tokens[pos - 1].parse::<i64>().is_err() {
                     // ")"の前は")"または数値である
                     return Ok((false, pos));
                 }
@@ -146,7 +144,7 @@ impl<'a> Calculator<'a> {
         Ok((true, 0 as usize))
     }
 
-    fn eval_inner(&self, tokens: &Vec<&str>) -> Result<i32> {
+    fn eval_inner(&self, tokens: &Vec<&str>) -> Result<i64> {
         let (valid, pos) = self.validate(tokens)?;
         if !valid {
             bail!("invalid syntax at {}", pos);
@@ -154,7 +152,7 @@ impl<'a> Calculator<'a> {
         let mut stack = Vec::new();
         let mut rpn_formula: Vec<&str> = Vec::new();
         for (_pos, token) in tokens.iter().enumerate() {
-            if let Ok(_x) = token.parse::<i32>() {
+            if let Ok(_x) = token.parse::<i64>() {
                 rpn_formula.push(token);
             } else {
                 if token == &"(" {
