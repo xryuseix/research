@@ -25,8 +25,10 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
   },
   devServer: {
-    contentBase: path.resolve(__dirname, "public"),
-  },
+    historyApiFallback: true,
+    contentBase: './',
+    hot: true
+ },
   plugins: [new htmlWebpackPlugin({ template: "./src/index.html" })],
   experiments: {
     asyncWebAssembly: true,
