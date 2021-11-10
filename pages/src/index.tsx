@@ -11,7 +11,3 @@ render(
   </BrowserRouter>,
   document.getElementById("root")
 );
-
-// devServer: {
-//   contentBase: path.resolve(__dirname, "public"),
-// },

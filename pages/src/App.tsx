@@ -9,7 +9,7 @@ const App = () => {
     <div>
       <Switch>
         <Route exact path="/" component={Calc} />
-        <Route path="/calc" component={Calc} />
+        <Route exact path="/calc" component={Calc} />
         <Redirect to="/" />
       </Switch>
     </div>

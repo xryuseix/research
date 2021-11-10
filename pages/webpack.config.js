@@ -26,7 +26,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    contentBase: './',
+    contentBase: '/research',
     hot: true
  },
   plugins: [new htmlWebpackPlugin({ template: "./src/index.html" })],
