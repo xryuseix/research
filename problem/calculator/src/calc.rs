@@ -112,7 +112,6 @@ impl<'a> Calculator<'a> {
         while unique_res.len() > 0 && unique_res[unique_res.len() - 1] == ' ' {
             unique_res.pop();
         }
-        println!("{:?}", unique_res.iter().collect::<String>());
         return unique_res.iter().collect();
     }
 
