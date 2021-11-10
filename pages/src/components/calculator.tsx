@@ -2,7 +2,7 @@
 
 import React from "react";
 import * as wasm from "calculator";
-import "./Calculator.css";
+import "./calculator.css";
 
 type Props = {
   title: string;
