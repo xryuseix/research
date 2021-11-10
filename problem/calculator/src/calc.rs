@@ -73,8 +73,47 @@ impl<'a> Calculator<'a> {
     }
 
     pub fn eval(&self, formula: &str) -> Result<i64> {
-        let mut tokens = formula.split_whitespace().collect::<Vec<_>>();
+        let spacing_formula = self.spacing(&formula);
+        let mut tokens = spacing_formula.split_whitespace().collect::<Vec<_>>();
         self.eval_inner(&mut tokens)
+    }
+
+    fn spacing(&self, formula_tmp: &str) -> String {
+        // スペースをいい感じに入れる
+        let mut formula = formula_tmp.chars().collect::<Vec<_>>();
+        if formula.len() >= 2 && formula[0] == '-' && formula[1] == '(' {
+            formula.insert(0, '0');
+        }
+        let mut res = Vec::new();
+        let op = vec!['(', ')', '+', '-', '*', '/', '%'];
+        let minus_front_op = vec!['+', '-', '*', '/', '%'];
+        for (i, c) in formula.iter().enumerate() {
+            if c == &'-' && i >= 1 && minus_front_op.contains(&formula[i - 1]) {
+                res.push(' ');
+                res.push('-');
+            } else if op.contains(&c) {
+                res.push(' ');
+                res.push(*c);
+                res.push(' ');
+            } else {
+                res.push(*c);
+            }
+        }
+        let mut unique_res = Vec::new();
+        for c in res.clone() {
+            if unique_res.len() == 0 && c == ' ' {
+                continue;
+            } else if unique_res.len() > 0 && c == ' ' && unique_res[unique_res.len() - 1] == ' ' {
+                continue;
+            } else {
+                unique_res.push(c);
+            }
+        }
+        while unique_res.len() > 0 && unique_res[unique_res.len() - 1] == ' ' {
+            unique_res.pop();
+        }
+        println!("{:?}", unique_res.iter().collect::<String>());
+        return unique_res.iter().collect();
     }
 
     fn validate(&self, tokens: &Vec<&str>) -> Result<(bool, usize)> {
@@ -256,6 +295,11 @@ mod tests {
             calc("( ( 1 + 3 ) * 2 ) * 3".to_string(), false).unwrap(),
             24
         );
+        assert_eq!(calc("1+2*3-4+5".to_string(), false).unwrap(), 8);
+        assert_eq!(calc("((1+3)*2)*3".to_string(), false).unwrap(), 24);
+        assert_eq!(calc("1--5+-2*-3".to_string(), false).unwrap(), 12);
+        assert_eq!(calc("1--1        ".to_string(), false).unwrap(), 2);
+        assert_eq!(calc("-(1--1)--3".to_string(), false).unwrap(), 1);
     }
 
     #[test]
