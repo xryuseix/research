@@ -188,12 +188,11 @@ impl<'a> Calculator<'a> {
     }
 }
 
-pub fn calc(formula: String) -> Result<String, anyhow::Error> {
-    let calc = Calculator::new(false);
-
+pub fn calc(formula: String, verbose: bool) -> Result<String, anyhow::Error> {
+    let calc = Calculator::new(verbose);
     let ans = match calc.eval(&formula) {
         Ok(answer) => format!("{}", answer),
-        Err(_e) => format!("ERROR"),
+        Err(e) => format!("[ERROR] {}", e),
     };
     return Ok(ans);
 }

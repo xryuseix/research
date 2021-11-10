@@ -9,6 +9,10 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
 pub fn calc(formula: String) -> String {
-    let ans: String = calc::calc(formula).unwrap();
-    return ans;
+    let ans: String = calc::calc(formula, false).unwrap();
+    if ans.starts_with("[ERROR]") {
+        return "ERROR".to_string();
+    } else {
+        return ans;
+    }
 }
