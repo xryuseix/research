@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Calc from "./calculator";
+import Calc from "./components/calculator";
 
 const App = () => {
   return (
