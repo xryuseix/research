@@ -1,5 +1,7 @@
 use anyhow::{bail, Result};
 use std::collections::HashMap;
+extern crate regex;
+use regex::Regex;
 
 struct RpnCalculator(bool);
 
@@ -186,13 +188,27 @@ impl<'a> Calculator<'a> {
     }
 }
 
-pub fn calc(formula: String, verbose: bool) -> Result<String, anyhow::Error> {
+pub fn calc(formula: String, verbose: bool) -> Result<i64, anyhow::Error> {
+    // 式が空のときエラーを返す
+    if formula.is_empty() {
+        bail!("[ERROR] Formula is empty");
+    }
+
+    // 式に変な文字が入っているとエラーを返す
+    let re = Regex::new(r"^[\d\(\)\+\-\*/% ]+$").unwrap();
+    if !re.is_match(&formula) {
+        bail!("[ERROR] Unnecessary characters are included");
+    }
+
     let calc = Calculator::new(verbose);
-    let ans = match calc.eval(&formula) {
-        Ok(answer) => format!("{}", answer),
-        Err(e) => format!("[ERROR] {}", e),
+    match calc.eval(&formula) {
+        Ok(answer) => {
+            return Ok(answer);
+        }
+        Err(e) => {
+            bail!(format!("[ERROR] {}", e));
+        }
     };
-    return Ok(ans);
 }
 
 #[cfg(test)]
@@ -227,26 +243,32 @@ mod tests {
 
     #[test]
     fn test_calc_ok() {
-        let calc = Calculator::new(false);
-        assert_eq!(calc.eval("2").unwrap(), 2);
-        assert_eq!(calc.eval("2 + 3").unwrap(), 5);
-        assert_eq!(calc.eval("2 + 3 * 4").unwrap(), 14);
-        assert_eq!(calc.eval("2 - 3 + 4").unwrap(), 3);
-        assert_eq!(calc.eval("1 + 2 * 3 - 4 + 5").unwrap(), 8);
-        assert_eq!(calc.eval("( 5 - 3 ) * ( 1 + 2 ) + 10").unwrap(), 16);
-        assert_eq!(calc.eval("( ( 1 + 3 ) * 2 ) * 3").unwrap(), 24);
+        assert_eq!(calc("2".to_string(), false).unwrap(), 2);
+        assert_eq!(calc("2 + 3".to_string(), false).unwrap(), 5);
+        assert_eq!(calc("2 + 3 * 4".to_string(), false).unwrap(), 14);
+        assert_eq!(calc("2 - 3 + 4".to_string(), false).unwrap(), 3);
+        assert_eq!(calc("1 + 2 * 3 - 4 + 5".to_string(), false).unwrap(), 8);
+        assert_eq!(
+            calc("( 5 - 3 ) * ( 1 + 2 ) + 10".to_string(), false).unwrap(),
+            16
+        );
+        assert_eq!(
+            calc("( ( 1 + 3 ) * 2 ) * 3".to_string(), false).unwrap(),
+            24
+        );
     }
 
     #[test]
     fn test_calc_ng() {
-        let calc = Calculator::new(false);
-        assert!(calc.eval("").is_err());
-        assert!(calc.eval("( )").is_err());
-        assert!(calc.eval("2 3").is_err());
-        assert!(calc.eval("2 + + 3").is_err());
-        assert!(calc.eval("( 1 + 2 ) ( 3 + 4 )").is_err());
-        assert!(calc.eval("1 + ) 3 + 4 ( + 5").is_err());
-        assert!(calc.eval("( 1 + 2 ) )").is_err());
-        assert!(calc.eval("( + ) * 3").is_err());
+        assert!(calc("".to_string(), false).is_err());
+        assert!(calc("( )".to_string(), false).is_err());
+        assert!(calc("2 3".to_string(), false).is_err());
+        assert!(calc("2 + + 3".to_string(), false).is_err());
+        assert!(calc("( 1 + 2 ) ( 3 + 4 )".to_string(), false).is_err());
+        assert!(calc("1 + ) 3 + 4 ( + 5".to_string(), false).is_err());
+        assert!(calc("( 1 + 2 ) )".to_string(), false).is_err());
+        assert!(calc("( + ) * 3".to_string(), false).is_err());
+        assert!(calc("1 + a".to_string(), false).is_err());
+        assert!(calc("5 と 7 を足して".to_string(), false).is_err());
     }
 }
