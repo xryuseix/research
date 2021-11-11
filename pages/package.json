@@ -1,7 +1,7 @@
 {
-  "name": "create-wasm-app",
+  "name": "Calculator",
   "version": "0.1.0",
-  "description": "create an app to consume rust-generated wasm packages",
+  "description": "Calculator",
   "main": "index.js",
   "bin": {
     "create-wasm-app": ".bin/create-wasm-app.js"
