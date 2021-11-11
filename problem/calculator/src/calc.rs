@@ -29,8 +29,18 @@ impl RpnCalculator {
                     "+" => x + y,
                     "-" => x - y,
                     "*" => x * y,
-                    "/" => x / y,
-                    "%" => x % y,
+                    "/" => {
+                        if y == 0 {
+                            bail!("division by zero");
+                        }
+                        x / y
+                    }
+                    "%" => {
+                        if y == 0 {
+                            bail!("division by zero");
+                        }
+                        x % y
+                    }
                     _ => bail!("invalid token at {}", pos),
                 };
                 stack.push(res);
@@ -313,5 +323,7 @@ mod tests {
         assert!(calc("( + ) * 3".to_string(), false).is_err());
         assert!(calc("1 + a".to_string(), false).is_err());
         assert!(calc("5 と 7 を足して".to_string(), false).is_err());
+        assert!(calc("10/0".to_string(), false).is_err());
+        assert!(calc("10%0".to_string(), false).is_err());
     }
 }
