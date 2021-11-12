@@ -88,24 +88,42 @@ impl<'a> Calculator<'a> {
         self.eval_inner(&mut tokens)
     }
 
-    fn spacing(&self, formula_tmp: &str) -> String {
-        // スペースをいい感じに入れる
-        let mut formula = formula_tmp.chars().collect::<Vec<_>>();
-        if formula.len() >= 2 && formula[0] == '-' && formula[1] == '(' {
-            formula.insert(0, '0');
+    // スペースをいい感じに入れる
+    fn spacing(&self, formula_str: &str) -> String {
+        let mut formula = Vec::new();
+        let mut formula_tmp = formula_str.chars().collect::<Vec<_>>();
+        if formula_tmp.len() >= 2 && formula_tmp[0] == '-' && formula_tmp[1] == '(' {
+            formula_tmp.insert(0, '0');
+        }
+        for (i, c) in formula_tmp.iter().enumerate() {
+            if i + 1 < formula_tmp.len()
+                && *c == '('
+                && vec!['+', '-'].contains(&formula_tmp[i + 1])
+            {
+                formula.push(*c);
+                formula.push(' ');
+                formula.push('0');
+            } else {
+                formula.push(*c);
+            }
         }
         let mut res = Vec::new();
-        let op = vec!['(', ')', '+', '-', '*', '/', '%'];
+        let charactor = vec!['(', ')', '+', '-', '*', '/', '%'];
+        let before_minus = vec!['(', '+', '-', '*', '/', '%'];
         for (i, c) in formula.iter().enumerate() {
-            if vec!['-', '+'].contains(c) && (i >= 1 && op.contains(&formula[i - 1]) || i==0) {
-                res.push(' ');
+            if vec!['-', '+'].contains(c)
+                && (i == 0 || (i + 1 < formula.len() && !charactor.contains(&formula[i + 1])))
+                && (i == 0 || (before_minus.contains(&formula[i - 1])))
+            {
                 res.push(*c);
-            } else if op.contains(&c) {
-                res.push(' ');
+            } else if charactor.contains(&c) {
                 res.push(*c);
                 res.push(' ');
             } else {
                 res.push(*c);
+                if i < formula.len() - 1 && charactor.contains(&formula[i + 1]) {
+                    res.push(' ');
+                }
             }
         }
         let mut unique_res = Vec::new();
@@ -121,7 +139,6 @@ impl<'a> Calculator<'a> {
         while unique_res.len() > 0 && unique_res[unique_res.len() - 1] == ' ' {
             unique_res.pop();
         }
-        println!("{:?}", unique_res);
         return unique_res.iter().collect();
     }
 
@@ -170,7 +187,9 @@ impl<'a> Calculator<'a> {
                 if pos == tokens.len() - 1 {
                     // 末尾に"("はない
                     return Ok((false, pos));
-                } else if tokens[pos + 1] != "(" && tokens[pos + 1].parse::<i64>().is_err() {
+                } else if !vec!["(", "+", "-"].contains(&tokens[pos + 1])
+                    && tokens[pos + 1].parse::<i64>().is_err()
+                {
                     // "("の後ろは"("または数値である
                     return Ok((false, pos));
                 }
@@ -179,7 +198,9 @@ impl<'a> Calculator<'a> {
                 if pos == 0 {
                     // 先頭に")"はない
                     return Ok((false, pos));
-                } else if tokens[pos - 1] != ")" && tokens[pos - 1].parse::<i64>().is_err() {
+                } else if !vec![")"].contains(&tokens[pos - 1])
+                    && tokens[pos - 1].parse::<i64>().is_err()
+                {
                     // ")"の前は")"または数値である
                     return Ok((false, pos));
                 }
@@ -312,6 +333,11 @@ mod tests {
         assert_eq!(calc("-(1--1)--3".to_string(), false).unwrap(), 1);
         assert_eq!(calc("(-1 * 3)".to_string(), false).unwrap(), -3);
         assert_eq!(calc("(-1*+3-(-3-+3))".to_string(), false).unwrap(), 3);
+        assert_eq!(calc("-(-(-3))".to_string(), false).unwrap(), -3);
+        assert_eq!(calc("+1+2-3*4".to_string(), false).unwrap(), -9);
+        assert_eq!(calc("4+(1+2)*3".to_string(), false).unwrap(), 13);
+        assert_eq!(calc("-(1-(-1))".to_string(), false).unwrap(), -2);
+        assert_eq!(calc("-((3+1))".to_string(), false).unwrap(), -4);
     }
 
     #[test]
@@ -325,7 +351,7 @@ mod tests {
         assert!(calc("( 1 + 2 ) )".to_string(), false).is_err());
         assert!(calc("( + ) * 3".to_string(), false).is_err());
         assert!(calc("1 + a".to_string(), false).is_err());
-        assert!(calc("5 と 7 を足して".to_string(), false).is_err());
+        assert!(calc("5 と +7 を足して".to_string(), false).is_err());
         assert!(calc("10/0".to_string(), false).is_err());
         assert!(calc("10%0".to_string(), false).is_err());
     }
