@@ -96,11 +96,10 @@ impl<'a> Calculator<'a> {
         }
         let mut res = Vec::new();
         let op = vec!['(', ')', '+', '-', '*', '/', '%'];
-        let minus_front_op = vec!['+', '-', '*', '/', '%'];
         for (i, c) in formula.iter().enumerate() {
-            if c == &'-' && i >= 1 && minus_front_op.contains(&formula[i - 1]) {
+            if vec!['-', '+'].contains(c) && (i >= 1 && op.contains(&formula[i - 1]) || i==0) {
                 res.push(' ');
-                res.push('-');
+                res.push(*c);
             } else if op.contains(&c) {
                 res.push(' ');
                 res.push(*c);
@@ -122,6 +121,7 @@ impl<'a> Calculator<'a> {
         while unique_res.len() > 0 && unique_res[unique_res.len() - 1] == ' ' {
             unique_res.pop();
         }
+        println!("{:?}", unique_res);
         return unique_res.iter().collect();
     }
 
@@ -292,6 +292,7 @@ mod tests {
     #[test]
     fn test_calc_ok() {
         assert_eq!(calc("2".to_string(), false).unwrap(), 2);
+        assert_eq!(calc("+3".to_string(), false).unwrap(), 3);
         assert_eq!(calc("2 + 3".to_string(), false).unwrap(), 5);
         assert_eq!(calc("2 + 3 * 4".to_string(), false).unwrap(), 14);
         assert_eq!(calc("2 - 3 + 4".to_string(), false).unwrap(), 3);
@@ -309,6 +310,8 @@ mod tests {
         assert_eq!(calc("1--5+-2*-3".to_string(), false).unwrap(), 12);
         assert_eq!(calc("1--1        ".to_string(), false).unwrap(), 2);
         assert_eq!(calc("-(1--1)--3".to_string(), false).unwrap(), 1);
+        assert_eq!(calc("(-1 * 3)".to_string(), false).unwrap(), -3);
+        assert_eq!(calc("(-1*+3-(-3-+3))".to_string(), false).unwrap(), 3);
     }
 
     #[test]
