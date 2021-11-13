@@ -50,7 +50,7 @@ class CalcForm extends React.Component<{}, State> {
           <tbody>
             <tr className={calcStyles.calc_button_num}>
               {Object.keys([...Array(10)]).map((num) => (
-                <td>
+                <td key={num}>
                   <button
                     className={calcStyles.calc_button}
                     onClick={() => this.addChar(`${num}`)}
@@ -62,7 +62,7 @@ class CalcForm extends React.Component<{}, State> {
             </tr>
             <tr className={calcStyles.calc_button_op}>
               {["+", "-", "*", "/", "%", "(", ")"].map((op) => (
-                <td>
+                <td key={op}>
                   <button
                     className={calcStyles.calc_button}
                     onClick={() => this.addChar(op)}
