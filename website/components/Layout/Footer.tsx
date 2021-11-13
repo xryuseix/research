@@ -26,7 +26,7 @@ export const Footer: React.FC<Props> = ({ home }: Props) => {
       >
         Powered by{" "}
         <span className={styles.logo}>
-          <Image
+          <img
             src="/research/favicon.ico"
             alt="xryuseix Logo"
             width={20}
