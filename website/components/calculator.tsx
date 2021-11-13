@@ -35,6 +35,14 @@ class CalcForm extends React.Component<{}, State> {
     this.setState({ ans: wasm.calc(formula) });
   }
 
+  deleteChar() {
+    if (this.state.formula.length > 0) {
+      let formula = this.state.formula.slice(0, -1);
+      this.setState({ formula: formula });
+      this.setState({ ans: wasm.calc(formula) });
+    }
+  }
+
   reCalc() {
     let formula = this.state.formula;
     this.setState({ ans: wasm.calc(formula) });
@@ -74,6 +82,12 @@ class CalcForm extends React.Component<{}, State> {
                 {op}
               </button>
             ))}
+            <button
+              className={`${calcStyles.calc_button} ${calcStyles.red}`}
+              onClick={() => this.deleteChar()}
+            >
+              delete
+            </button>
             <button
               className={`${calcStyles.calc_button} ${calcStyles.red}`}
               onClick={() => this.reCalc()}
