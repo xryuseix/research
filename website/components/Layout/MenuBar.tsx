@@ -122,16 +122,6 @@ const MenuBar: FC = ({ children }) => {
             </ListItemIcon>
             <ListItemText primary="Home" style={{ width: "1em" }} />
           </LinkListItem>
-          <LinkListItem href="/apps/calc">
-            <ListItemIcon>
-              <CalculateIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Calculator"
-              secondary="Computing with WebAssembly"
-              style={{ width: "5em" }}
-            />
-          </LinkListItem>
           <ListItemButton onClick={handleClick}>
             <ListItemIcon>
               <InfoIcon />
@@ -164,6 +154,16 @@ const MenuBar: FC = ({ children }) => {
               </LinkListItem>
             </List>
           </Collapse>
+          <LinkListItem href="/apps/calc">
+            <ListItemIcon>
+              <CalculateIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Calculator"
+              secondary="Computing with WebAssembly"
+              style={{ width: "13em" }}
+            />
+          </LinkListItem>
         </List>
       </Drawer>
       <div>{children}</div>
