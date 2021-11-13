@@ -3,12 +3,16 @@
 
 $ruler: 16px;
 $color-bg: #ebecf0;
-$color-red: #AE1100;
+$color-red: #ae1100;
 $color-shadow: #babecc;
 $color-white: #fff;
 
 .formula > input {
   margin: 10px;
+}
+
+.formula {
+  word-wrap: break-word;
 }
 
 .formula,
@@ -20,23 +24,31 @@ $color-white: #fff;
 
 .calculator_frame {
   border: 1px solid #ccc;
-  width: 100%;
   background-color: $color-bg;
   padding: 10px;
+  text-align: center;
+  
+  @media screen and (min-width: 800px){ 
+    width: 700px;
+  }
+  @media screen and (max-width: 800px) {
+    width: 90%;
+  }
 }
 
 .input {
   width: 80%;
   max-width: 25rem;
   margin-right: math.div($ruler, 2);
-  box-shadow:  inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
+  box-shadow: inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
   box-sizing: border-box;
   transition: all 0.2s ease-in-out;
   appearance: none;
   -webkit-appearance: none;
 
   &:focus {
-    box-shadow:  inset 1px 1px 2px $color-shadow, inset -1px -1px 2px $color-white;
+    box-shadow: inset 1px 1px 2px $color-shadow,
+      inset -1px -1px 2px $color-white;
   }
 }
 
@@ -55,7 +67,8 @@ $color-white: #fff;
   margin: 1.5px;
 }
 
-.calc_button, .input {
+.calc_button,
+.input {
   border: 0;
   outline: 0;
   font-size: $ruler;
@@ -85,6 +98,6 @@ $color-white: #fff;
 
   &.red {
     width: 6em;
-    color:$color-red;
+    color: $color-red;
   }
 }
