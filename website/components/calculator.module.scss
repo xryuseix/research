@@ -1,0 +1,85 @@
+/** @format */
+@use "sass:math";
+
+$ruler: 16px;
+$color-bg: #ebecf0;
+$color-red: #AE1100;
+$color-shadow: #babecc;
+$color-white: #fff;
+
+.formula > input {
+  margin: 10px;
+}
+
+.formula,
+.formula > input {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Meiryo";
+}
+
+.calculator_frame {
+  border: 1px solid #ccc;
+  width: 100%;
+  background-color: $color-bg;
+  padding: 10px;
+}
+
+.calc_button {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ccc;
+  font-size: 2rem;
+  margin: 1.5px;
+}
+
+.calc_recalc_button {
+  height: 50px;
+  border: 1px solid #ccc;
+  font-size: 2rem;
+  margin: 1.5px;
+}
+
+.input {
+  width: 80%;
+  max-width: 25rem;
+}
+
+
+.calc_button {
+  border: 0;
+  outline: 0;
+  font-size: $ruler;
+  border-radius: $ruler * 1;
+  padding: $ruler;
+  background-color: $color-bg;
+  text-shadow: 1px 1px 0 $color-white;
+  margin: 3px;
+}
+
+.calc_button {
+  color: #61677c;
+  font-weight: bold;
+  box-shadow: -5px -5px 20px $color-white, 5px 5px 20px $color-shadow;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover {
+    box-shadow: -2px -2px 5px $color-white, 2px 2px 5px $color-shadow;
+  }
+
+  &:active {
+    box-shadow: inset 1px 1px 2px $color-shadow,
+      inset -1px -1px 2px $color-white;
+  }
+
+  .icon {
+    margin-right: math.div($ruler, 2);
+  }
+
+  &.red {
+    width: 6em;
+    color:$color-red;
+  }
+}

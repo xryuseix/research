@@ -2,7 +2,7 @@
 
 import React from "react";
 import * as wasm from "calculator";
-import calcStyles from "./calculator.module.css";
+import calcStyles from "./calculator.module.scss";
 
 type Props = {
   title: string;
@@ -75,7 +75,7 @@ class CalcForm extends React.Component<{}, State> {
               </button>
             ))}
             <button
-              className={calcStyles.calc_recalc_button}
+              className={`${calcStyles.calc_button} ${calcStyles.red}`}
               onClick={() => this.reCalc()}
             >
               recalc
