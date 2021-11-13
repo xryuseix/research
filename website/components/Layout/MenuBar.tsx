@@ -76,8 +76,7 @@ const MenuBar: FC = ({ children }) => {
       </Box>
 
       <Drawer
-        // variant="temporary"
-        variant="permanent"
+        variant="temporary"
         open={drawerOpen}
         onClose={handleDrawerToggle}
       >
