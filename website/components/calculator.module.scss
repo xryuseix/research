@@ -13,7 +13,7 @@ $color-white: #fff;
 
 .formula,
 .formula > input {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: bold;
   font-family: "Meiryo";
 }
@@ -23,6 +23,21 @@ $color-white: #fff;
   width: 100%;
   background-color: $color-bg;
   padding: 10px;
+}
+
+.input {
+  width: 80%;
+  max-width: 25rem;
+  margin-right: math.div($ruler, 2);
+  box-shadow:  inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  appearance: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    box-shadow:  inset 1px 1px 2px $color-shadow, inset -1px -1px 2px $color-white;
+  }
 }
 
 .calc_button {
@@ -40,13 +55,7 @@ $color-white: #fff;
   margin: 1.5px;
 }
 
-.input {
-  width: 80%;
-  max-width: 25rem;
-}
-
-
-.calc_button {
+.calc_button, .input {
   border: 0;
   outline: 0;
   font-size: $ruler;
@@ -72,10 +81,6 @@ $color-white: #fff;
   &:active {
     box-shadow: inset 1px 1px 2px $color-shadow,
       inset -1px -1px 2px $color-white;
-  }
-
-  .icon {
-    margin-right: math.div($ruler, 2);
   }
 
   &.red {
