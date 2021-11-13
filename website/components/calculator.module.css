@@ -12,6 +12,7 @@
 
 .calculator_frame {
     border: 1px solid #ccc;
+    width: 100%;
 }
 
 .calc_button {
@@ -19,4 +20,17 @@
     height: 50px;
     border: 1px solid #ccc;
     font-size: 2rem;
+    margin: 1.5px;
+}
+
+.calc_recalc_button {
+    height: 50px;
+    border: 1px solid #ccc;
+    font-size: 2rem;
+    margin: 1.5px;
+}
+
+.input {
+    width: 80%;
+    max-width: 25rem;
 }
