@@ -13,13 +13,10 @@ const Home: NextPage = () => {
       description="研究室で書いたコードや調べた内容などをこのサイトに記録します"
     >
       <div className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <Link href="/apps/calc">Next.js!</Link>
-        </h1>
+        <h1 className={styles.title}>Welcome to My Research Page!</h1>
 
         <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
+          Programs and Document related to the Research.
         </p>
       </div>
     </Layout>
