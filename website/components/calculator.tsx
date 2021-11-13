@@ -58,6 +58,7 @@ class CalcForm extends React.Component<{}, State> {
               <button
                 className={calcStyles.calc_button}
                 onClick={() => this.addChar(`${num}`)}
+                key={num}
               >
                 {num}
               </button>
@@ -68,6 +69,7 @@ class CalcForm extends React.Component<{}, State> {
               <button
                 className={calcStyles.calc_button}
                 onClick={() => this.addChar(op)}
+                key={op}
               >
                 {op}
               </button>

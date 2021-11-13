@@ -9,7 +9,7 @@ const Tech = () => {
       description="このサイトの技術構成を紹介"
     >
       <h1>このサイトを構成する技術</h1>
-      <img src="/research/tech.png" width="100%" />
+      <img src="/research/tech.png" width="100%" alt="Technologies" />
     </Layout>
   );
 };
