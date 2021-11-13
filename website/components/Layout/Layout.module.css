@@ -7,6 +7,7 @@
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
+  flex-flow: column;
 }
 
 .footer a {
@@ -14,19 +15,25 @@
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  display:inline;
+  display: inline;
 }
 
 .logo {
   height: 1em;
   margin-left: 0.5rem;
-  display:inline;
-}
-
-.backToHome {
-  margin: 3rem 0 0;
+  display: inline;
 }
 
 .main {
   margin: 20px;
+}
+
+.backToHome {
+  margin-left: 30px;
+  margin-right: auto;
+}
+
+.footerName {
+  margin-right: auto;
+  margin-left: auto;
 }

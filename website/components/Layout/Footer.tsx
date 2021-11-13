@@ -1,7 +1,6 @@
 /** @format */
 import Link from "next/link";
 
-import utilStyles from "../../styles/utils.module.css";
 import styles from "./Layout.module.css";
 
 interface Props {
@@ -12,13 +11,13 @@ export const Footer: React.FC<Props> = ({ home }: Props) => {
   return (
     <footer className={styles.footer}>
       {!home && (
-        <div className={utilStyles.backToHome}>
+        <div className={styles.backToHome}>
           <Link href="/">
             <a>← Back to home</a>
           </Link>
         </div>
       )}
-      <p className={styles.footerName}>
+      <div className={styles.footerName}>
         © 2021,{" "}
         <a
           href="https://xryuseix.github.io"
@@ -35,7 +34,7 @@ export const Footer: React.FC<Props> = ({ home }: Props) => {
           Ryusei Ishikawa
         </a>{" "}
         All Right Reserved.
-      </p>
+      </div>
     </footer>
   );
 };
