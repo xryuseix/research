@@ -1,6 +1,4 @@
 /** @format */
-
-import { SpaOutlined } from "@material-ui/icons";
 import Link from "next/link";
 
 import utilStyles from "../../styles/utils.module.css";

@@ -37,7 +37,7 @@ const LinkListItem = React.forwardRef<HTMLAnchorElement, LinkListItemProps>(
   function LinkListItem(props, forwardedRef) {
     const { href, ...other } = props;
     return (
-      <Link href={href}>
+      <Link href={href} passHref>
         <ListItem component="a" button ref={forwardedRef} {...other} />
       </Link>
     );
