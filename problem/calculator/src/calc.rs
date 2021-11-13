@@ -161,7 +161,10 @@ impl<'a> Calculator<'a> {
             let y = tokens[pos + 1];
             let is_x_num = x.parse::<i64>().is_ok();
             let is_y_num = y.parse::<i64>().is_ok();
-            if is_x_num && is_y_num {
+            let re = Regex::new(r"^0[0-9]+$").unwrap();
+            if re.is_match(&x) || re.is_match(&y) {
+                return Ok((false, pos));
+            } else if is_x_num && is_y_num {
                 // 数値 数値の時
                 return Ok((false, pos));
             } else if is_x_num || is_y_num {
@@ -354,5 +357,6 @@ mod tests {
         assert!(calc("5 と +7 を足して".to_string(), false).is_err());
         assert!(calc("10/0".to_string(), false).is_err());
         assert!(calc("10%0".to_string(), false).is_err());
+        assert!(calc("00+0".to_string(), false).is_err());
     }
 }
