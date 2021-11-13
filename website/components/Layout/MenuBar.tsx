@@ -20,6 +20,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import HomeIcon from "@material-ui/icons/Home";
 import CalculateIcon from "@mui/icons-material/Calculate";
+import InfoIcon from "@mui/icons-material/Info";
 
 const titleStyle: { [key: string]: string | number } = {
   textTransform: "none",
@@ -75,7 +76,8 @@ const MenuBar: FC = ({ children }) => {
       </Box>
 
       <Drawer
-        variant="temporary"
+        // variant="temporary"
+        variant="permanent"
         open={drawerOpen}
         onClose={handleDrawerToggle}
       >
@@ -96,11 +98,25 @@ const MenuBar: FC = ({ children }) => {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </LinkListItem>
+          <LinkListItem href="/info/tech">
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Info/Tech"
+              secondary="このサイトを構成する技術"
+              style={{ width: "3em" }}
+            />
+          </LinkListItem>
           <LinkListItem href="/apps/calc">
             <ListItemIcon>
               <CalculateIcon />
             </ListItemIcon>
-            <ListItemText primary="Calculator" secondary="Using WebAssembly" />
+            <ListItemText
+              primary="Calculator"
+              secondary="Computing with WebAssembly"
+              style={{ width: "3em" }}
+            />
           </LinkListItem>
         </List>
       </Drawer>
