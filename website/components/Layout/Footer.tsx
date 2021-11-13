@@ -1,8 +1,9 @@
 /** @format */
 
+import Link from "next/link";
+
 import utilStyles from "../../styles/utils.module.css";
 import styles from "./Layout.module.css";
-import Link from "next/link";
 
 interface Props {
   home?: boolean;
