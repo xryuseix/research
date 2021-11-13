@@ -27,14 +27,14 @@ jobs:
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
           cd problem/calculator && wasm-pack build
-          cd ../../pages && yarn install
+          cd ../../website && yarn install
           cp -r ../problem/calculator/pkg/ node_modules/calculator/
       - name: Build
-        run: cd pages && yarn build
+        run: cd website && yarn build && yarn export
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: pages/public
+          publish_dir: website/out
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
