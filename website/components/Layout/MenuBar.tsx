@@ -12,6 +12,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { listItemClasses } from "@mui/material/ListItem";
 import ListItem, { ListItemProps } from "@mui/material/ListItem";
 import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import Collapse from "@mui/material/Collapse";
 
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
@@ -21,6 +23,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import InfoIcon from "@mui/icons-material/Info";
+import CodeIcon from "@mui/icons-material/Code";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 const titleStyle: { [key: string]: string | number } = {
   textTransform: "none",
@@ -37,20 +42,40 @@ type LinkListItemProps = Omit<
 const LinkListItem = React.forwardRef<HTMLAnchorElement, LinkListItemProps>(
   function LinkListItem(props, forwardedRef) {
     const { href, ...other } = props;
-    return (
-      <Link href={href} passHref>
-        <ListItem component="a" button ref={forwardedRef} {...other} />
-      </Link>
-    );
+    if (href.startsWith("http")) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none", color: "#212121" }}
+        >
+          <ListItem component="a" button ref={forwardedRef} {...other} />
+        </a>
+      );
+    } else {
+      return (
+        <Link href={href} passHref>
+          <ListItem component="a" button ref={forwardedRef} {...other} />
+        </Link>
+      );
+    }
   }
 );
 
 const MenuBar: FC = ({ children }) => {
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
   // Drawer の開閉
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen); // Drawer の開閉状態を反転
+    setDrawerOpen(!drawerOpen);
   };
+
+  // ネストされたリスト の開閉
+  const [open, setOpen] = React.useState(true);
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -95,17 +120,7 @@ const MenuBar: FC = ({ children }) => {
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Home" />
-          </LinkListItem>
-          <LinkListItem href="/info/tech">
-            <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Info/Tech"
-              secondary="このサイトを構成する技術"
-              style={{ width: "3em" }}
-            />
+            <ListItemText primary="Home" style={{ width: "1em" }} />
           </LinkListItem>
           <LinkListItem href="/apps/calc">
             <ListItemIcon>
@@ -114,9 +129,41 @@ const MenuBar: FC = ({ children }) => {
             <ListItemText
               primary="Calculator"
               secondary="Computing with WebAssembly"
-              style={{ width: "3em" }}
+              style={{ width: "5em" }}
             />
           </LinkListItem>
+          <ListItemButton onClick={handleClick}>
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary="Info" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding style={{ marginLeft: "1em" }}>
+              <LinkListItem href="/info/tech">
+                <ListItemIcon>
+                  <CodeIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Tech"
+                  secondary="このサイトを構成する技術"
+                  style={{ width: "0em" }}
+                />
+              </LinkListItem>
+              <LinkListItem href="https://github.com/xryuseix/research">
+                <ListItemIcon>
+                  <GitHubIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Repository"
+                  secondary="xryuseix/research"
+                  style={{ width: "0em" }}
+                  className="noLinkCSS"
+                />
+              </LinkListItem>
+            </List>
+          </Collapse>
         </List>
       </Drawer>
       <div>{children}</div>

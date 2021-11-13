@@ -16,6 +16,8 @@
   align-items: center;
   flex-grow: 1;
   display: inline;
+  color: #0070f3;
+  text-decoration: none;
 }
 
 .logo {
