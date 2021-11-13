@@ -1,5 +1,6 @@
 /** @format */
 
+import { SpaOutlined } from "@material-ui/icons";
 import Link from "next/link";
 
 import utilStyles from "../../styles/utils.module.css";
@@ -19,21 +20,24 @@ export const Footer: React.FC<Props> = ({ home }: Props) => {
           </Link>
         </div>
       )}
-      <a
-        href="https://xryuseix.github.io"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by{" "}
-        <span className={styles.logo}>
+      <p className={styles.footerName}>
+        © 2021,{" "}
+        <a
+          href="https://xryuseix.github.io"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img
             src="/research/favicon.ico"
             alt="xryuseix Logo"
             width={20}
             height={20}
+            className={styles.logo}
           />
-        </span>
-      </a>
+          Ryusei Ishikawa
+        </a>{" "}
+        All Right Reserved.
+      </p>
     </footer>
   );
 };

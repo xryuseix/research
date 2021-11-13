@@ -14,11 +14,13 @@
   justify-content: center;
   align-items: center;
   flex-grow: 1;
+  display:inline;
 }
 
 .logo {
   height: 1em;
   margin-left: 0.5rem;
+  display:inline;
 }
 
 .backToHome {
