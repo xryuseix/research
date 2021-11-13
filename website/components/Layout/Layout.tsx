@@ -7,10 +7,11 @@ import { Header } from "./Header";
 
 export const Layout: FC<{
   headerChild?: JSX.Element;
-}> = ({ children, headerChild }) => (
+  home?: boolean;
+}> = ({ children, headerChild, home }) => (
   <div>
     <Header>{headerChild}</Header>
     <main>{children}</main>
-    <Footer />
+    <Footer home={home}/>
   </div>
 );
