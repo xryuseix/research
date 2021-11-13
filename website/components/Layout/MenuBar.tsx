@@ -44,7 +44,7 @@ const LinkListItem = React.forwardRef<HTMLAnchorElement, LinkListItemProps>(
   }
 );
 
-const Menubar: FC = ({ children }) => {
+const MenuBar: FC = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   // Drawer の開閉
   const handleDrawerToggle = () => {
@@ -109,4 +109,4 @@ const Menubar: FC = ({ children }) => {
   );
 };
 
-export default Menubar;
+export default MenuBar;

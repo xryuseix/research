@@ -3,7 +3,7 @@
 import { FC } from "react";
 
 import { Footer } from "./Footer";
-import Menubar from "./Menubar";
+import Menubar from "./MenuBar";
 import Header from "./Header";
 
 import styles from "./Layout.module.css";
