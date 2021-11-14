@@ -3,7 +3,7 @@
 .footer {
   display: flex;
   flex: 1;
-  padding: 2rem 0;
+  padding: 10px 0;
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
@@ -31,8 +31,14 @@
 }
 
 .backToHome {
-  margin-left: 30px;
+  margin-left: 3%;
   margin-right: auto;
+  border-radius: 5px;
+  padding: 3px;  
+}
+
+.backToHome:hover {
+  background-color: #eaeaea;
 }
 
 .footerName {
