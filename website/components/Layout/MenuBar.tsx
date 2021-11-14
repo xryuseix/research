@@ -93,7 +93,7 @@ const MenuBar: FC = ({ children }) => {
             </IconButton>
             <Link href="/" passHref>
               <Button color="inherit" style={titleStyle}>
-                Research Related Page
+                Research Page
               </Button>
             </Link>
           </Toolbar>
