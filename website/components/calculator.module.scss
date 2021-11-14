@@ -7,19 +7,15 @@ $color-red: #ae1100;
 $color-shadow: #babecc;
 $color-white: #fff;
 
-.formula > input {
-  margin: 10px;
-}
-
 .formula {
   word-wrap: break-word;
+  padding: 10px;
 }
 
 .formula,
 .formula > input {
-  font-size: 1.6rem;
-  font-weight: bold;
-  font-family: "Meiryo";
+  font-family: "Montserrat", sans-serif;
+  font-size: $ruler * 1.2;
 }
 
 .calculator_frame {
@@ -28,9 +24,11 @@ $color-white: #fff;
   background-color: $color-bg;
   padding: 10px;
   text-align: center;
-  
-  @media screen and (min-width: 800px){ 
-    width: 700px;
+  border-radius: 15px;
+  box-shadow: -5px -5px 20px $color-white, 5px 5px 20px $color-shadow;
+
+  @media screen and (min-width: 800px) {
+    width: 420px;
   }
   @media screen and (max-width: 800px) {
     width: 90%;
@@ -38,7 +36,7 @@ $color-white: #fff;
 }
 
 .input {
-  width: 80%;
+  width: 100%;
   max-width: 25rem;
   margin-right: math.div($ruler, 2);
   box-shadow: inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
@@ -101,4 +99,9 @@ $color-white: #fff;
     width: 6em;
     color: $color-red;
   }
+}
+
+.formula_ans {
+  text-align: left;
+  margin-left: 10px;
 }
