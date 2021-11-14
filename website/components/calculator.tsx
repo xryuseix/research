@@ -71,7 +71,7 @@ class CalcForm extends React.Component<{}, State> {
         <div>
           {buttonPrints.map((buttonsRow) => {
             return (
-              <div>
+              <div key={buttonsRow.toString()}>
                 {buttonsRow.map((button) => {
                   let buttonClassName = `${calcStyles.calc_button}`;
                   if (button == "+") {
