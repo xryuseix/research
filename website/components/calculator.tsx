@@ -62,7 +62,7 @@ class CalcForm extends React.Component<{}, State> {
   }
 
   modeChange = (event: React.MouseEvent<HTMLInputElement>) => {
-    let value: string | null = event?.currentTarget?.value;
+    let value: string | null = (event.target as HTMLInputElement).value;
     this.setState({ alignment: value });
     if (value == "0") {
       this.setState({ styleMode: "" });
