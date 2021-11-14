@@ -61,7 +61,7 @@ class CalcForm extends React.Component<{}, State> {
     }
   }
 
-  modeChange = (event: React.MouseEvent<HTMLInputElement>) => {
+  modeChange = (event: Event) => {
     let value: string | null = (event.target as HTMLInputElement).value;
     this.setState({ alignment: value });
     if (value == "0") {
@@ -107,7 +107,6 @@ class CalcForm extends React.Component<{}, State> {
             max={2}
             step={1}
             marks={marks}
-            valueLabelDisplay="auto"
             onChange={this.modeChange}
           />
         </Box>
