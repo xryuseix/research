@@ -1,0 +1,9 @@
+/** @format */
+
+.calc {
+  text-align: center;
+}
+
+.calc_frame {
+  display: inline-block;
+}
