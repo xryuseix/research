@@ -50,7 +50,13 @@ class CalcForm extends React.Component<{}, State> {
   }
 
   render() {
-
+    const buttonPrints = [
+      ["(", ")", "%", "/"],
+      ["7", "8", "9", "*"],
+      ["4", "5", "6", "-"],
+      ["1", "2", "3", "+", ""],
+      ["0", "del", ""],
+    ];
     return (
       <div className={calcStyles.calculator_frame}>
         <div className={calcStyles.formula}>
@@ -63,34 +69,35 @@ class CalcForm extends React.Component<{}, State> {
           <div className={calcStyles.formula_ans}>= {this.state.ans}</div>
         </div>
         <div>
-          <div className={calcStyles.calc_button_num}>
-            {Object.keys([...Array(10)]).map((num) => (
-              <button
-                className={calcStyles.calc_button}
-                onClick={() => this.addChar(`${num}`)}
-                key={num}
-              >
-                {num}
-              </button>
-            ))}
-          </div>
-          <div className={calcStyles.calc_button_op}>
-            {["+", "-", "*", "/", "%", "(", ")"].map((op) => (
-              <button
-                className={calcStyles.calc_button}
-                onClick={() => this.addChar(op)}
-                key={op}
-              >
-                {op}
-              </button>
-            ))}
-            <button
-              className={`${calcStyles.calc_button} ${calcStyles.red}`}
-              onClick={() => this.deleteChar()}
-            >
-              delete
-            </button>
-          </div>
+          {buttonPrints.map((buttonsRow) => {
+            return (
+              <div>
+                {buttonsRow.map((button) => {
+                  let buttonClassName = `${calcStyles.calc_button}`;
+                  if (button == "+") {
+                    buttonClassName += ` ${calcStyles.calc_button_add}`;
+                  } else if (button == "del") {
+                    buttonClassName += ` ${calcStyles.calc_button_del}`;
+                  } else if (button == "") {
+                    buttonClassName += ` ${calcStyles.calc_button_null}`;
+                  }
+                  return (
+                    <button
+                      className={buttonClassName}
+                      onClick={() =>
+                        button != "del"
+                          ? this.addChar(`${button}`)
+                          : this.deleteChar()
+                      }
+                      key={button}
+                    >
+                      {button}
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
