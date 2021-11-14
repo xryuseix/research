@@ -1,4 +1,5 @@
 use anyhow::{bail, Result};
+use std::cmp;
 use std::collections::HashMap;
 extern crate regex;
 use regex::Regex;
@@ -26,18 +27,30 @@ impl RpnCalculator {
                 let x = stack.pop().expect("invalid syntax");
 
                 let res = match token {
-                    "+" => x + y,
-                    "-" => x - y,
-                    "*" => x * y,
+                    "+" => match x.checked_add(y) {
+                        Some(z) => z,
+                        None => bail!("overflow"),
+                    },
+                    "-" => match x.checked_sub(y) {
+                        Some(z) => z,
+                        None => bail!("overflow"),
+                    },
+                    "*" => match x.checked_mul(y) {
+                        Some(z) => z,
+                        None => bail!("overflow"),
+                    },
                     "/" => {
                         if y == 0 {
                             bail!("division by zero");
                         }
+                        if cmp::min(x, y) == i64::MIN && cmp::max(x, y) == -1 {
+                            bail!("overflow");
+                        }
                         x / y
                     }
                     "%" => {
-                        if y == 0 {
-                            bail!("division by zero");
+                        if y <= 0 {
+                            bail!("division by negative");
                         }
                         x % y
                     }
@@ -308,6 +321,12 @@ mod tests {
         assert!(calc.eval(&vec!["1", "1"]).is_err());
         assert!(calc.eval(&vec!["1", "1", "^"]).is_err());
         assert!(calc.eval(&vec!["1", "1", "-", "+"]).is_err());
+        assert!(calc.eval(&vec!["9223372036854775808"]).is_err());
+        assert!(calc.eval(&vec!["9223372036854775807", "1", "+"]).is_err());
+        assert!(calc.eval(&vec!["-9223372036854775808", "1", "-"]).is_err());
+        assert!(calc.eval(&vec!["9223372036854775807", "2", "*"]).is_err());
+        assert!(calc.eval(&vec!["-9223372036854775808", "-1", "/"]).is_err());
+        assert!(calc.eval(&vec!["100", "-1", "%"]).is_err());
     }
 
     #[test]
