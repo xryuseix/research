@@ -1,17 +1,13 @@
 /** @format */
 
 import React from "react";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
 
 import * as wasm from "calculator";
 
 import calcStyles from "./calculator.module.scss";
 import gamingStyles from "../styles/gaming.module.css";
-
-import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
-import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 
 type Props = {
   title: string;
@@ -21,7 +17,7 @@ interface State {
   formula: string;
   ans: string;
   alignment: string | null;
-  styleMode: string | null;
+  styleMode: string;
 }
 
 class CalcForm extends React.Component<{}, State> {
@@ -30,7 +26,7 @@ class CalcForm extends React.Component<{}, State> {
     this.state = {
       formula: "((1+3)*-2)*3",
       ans: "-24",
-      alignment: "normal",
+      alignment: "0",
       styleMode: "",
     };
     this.handleChange = this.handleChange.bind(this);
@@ -65,14 +61,14 @@ class CalcForm extends React.Component<{}, State> {
     }
   }
 
-  modeChange = (event: React.MouseEvent<HTMLElement>) => {
-    let value = event.currentTarget.getAttribute("value");
+  modeChange = (event: React.MouseEvent<HTMLInputElement>) => {
+    let value: string | null = event?.currentTarget?.value;
     this.setState({ alignment: value });
-    if (value == "normal") {
+    if (value == "0") {
       this.setState({ styleMode: "" });
-    } else if (value == "gaming1") {
+    } else if (value == "1") {
       this.setState({ styleMode: gamingStyles.gaming1 });
-    } else if (value == "gaming2") {
+    } else if (value == "2") {
       this.setState({ styleMode: gamingStyles.gaming2 });
     }
   };
@@ -86,24 +82,35 @@ class CalcForm extends React.Component<{}, State> {
       ["0", "del", ""],
     ];
 
+    const marks = [
+      {
+        value: 0,
+        label: "Normal",
+      },
+      {
+        value: 1,
+        label: "Gaming1",
+      },
+      {
+        value: 2,
+        label: "Gaming2",
+      },
+    ];
+
     return (
       <>
-        <ToggleButtonGroup
-          color="primary"
-          value={this.state.alignment}
-          exclusive
-          onChange={this.modeChange}
-        >
-          <ToggleButton value="normal">
-            <RadioButtonCheckedIcon />
-          </ToggleButton>
-          <ToggleButton value="gaming1">
-            <VideogameAssetIcon />
-          </ToggleButton>
-          <ToggleButton value="gaming2">
-            <SportsEsportsIcon/>
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <Box sx={{ width: 300 }}>
+          <Slider
+            aria-label="Always visible"
+            defaultValue={0}
+            min={0}
+            max={2}
+            step={1}
+            marks={marks}
+            valueLabelDisplay="auto"
+            onChange={this.modeChange}
+          />
+        </Box>
         <div
           className={`${calcStyles.calculator_frame} ${this.state.styleMode}`}
         >
