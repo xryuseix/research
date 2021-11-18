@@ -1,4 +1,4 @@
-mod calc;
+mod make10search;
 mod utils;
 
 use wasm_bindgen::prelude::*;
@@ -8,13 +8,13 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-pub fn calc(numbers: Vec<i32>) -> Vec<String> {
+pub fn calc(numbers: Vec<i32>) -> String {
     if numbers.len() != 4 {
-        return vec![String::from("[ERROR]")];
+        return String::from("[ERROR]");
     }
-    let res = match calc::calc(numbers) {
-        Ok(ans) => ans,
-        Err(_e) => "[ERROR]".to_string(),
+    let res = match make10search::brute_force(numbers) {
+        Ok(ans) => ans.join("\n"),
+        Err(_e) => String::from("[ERROR]"),
     };
     return res;
 }

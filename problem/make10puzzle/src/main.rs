@@ -1,6 +1,6 @@
 use anyhow::Result;
-use std::io::{stdin, BufRead, BufReader};
-mod calc;
+use std::io::{stdin, BufRead};
+mod make10search;
 
 fn main() -> Result<()> {
     let stdin = stdin();
@@ -11,7 +11,11 @@ fn main() -> Result<()> {
 fn run<R: BufRead>(reader: R) -> Result<()> {
     for line in reader.lines() {
         let line = line.unwrap();
-        match calc::calc(line) {
+        let numbers: Vec<i32> = line
+            .split_whitespace()
+            .map(|s| s.parse().expect("parse error"))
+            .collect();
+        match make10search::brute_force(numbers) {
             Ok(answer) => {
                 for ans in answer {
                     println!("{:?}", ans);
