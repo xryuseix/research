@@ -1,45 +1,36 @@
-pub trait LexicalPermutation {
-    fn next_permutation(&mut self) -> bool;
-}
-
-impl<T> LexicalPermutation for [T]
-where
-    T: Ord,
-{
-    fn next_permutation(&mut self) -> bool {
-        if self.len() < 2 {
-            return false;
-        }
-
-        let mut i = self.len() - 1;
-        while i > 0 && self[i - 1] >= self[i] {
-            i -= 1;
-        }
-
-        if i == 0 {
-            return false;
-        }
-
-        let mut j = self.len() - 1;
-        while j >= i && self[j] <= self[i - 1] {
-            j -= 1;
-        }
-
-        self.swap(j, i - 1);
-        self[i..].reverse();
-
-        true
+pub fn next_permutation(array: &mut Vec<i32>) -> bool {
+    if array.len() < 2 {
+        return false;
     }
+
+    let mut i = array.len() - 1;
+    while i > 0 && array[i - 1] >= array[i] {
+        i -= 1;
+    }
+
+    if i == 0 {
+        return false;
+    }
+
+    let mut j = array.len() - 1;
+    while j >= i && array[j] <= array[i - 1] {
+        j -= 1;
+    }
+
+    array.swap(j, i - 1);
+    array[i..].reverse();
+
+    true
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
-    fn lexical() {
-        let mut data = [1, 2, 3];
+    fn next_permutation_ok() {
+        let mut data: Vec<i32> = vec![1, 2, 3];
         let mut c = 0;
-        while data.next_permutation() {
+        while next_permutation(&mut data) {
             match c {
                 0 => assert_eq!(&data, &[1, 3, 2]),
                 1 => assert_eq!(&data, &[2, 1, 3]),
