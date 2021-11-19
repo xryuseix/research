@@ -1,6 +1,6 @@
 use anyhow::Result;
 use std::io::{stdin, BufRead};
-mod make10search;
+use make10puzzle::make10search;
 
 fn main() -> Result<()> {
     let stdin = stdin();

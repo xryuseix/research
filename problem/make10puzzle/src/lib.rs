@@ -1,6 +1,6 @@
-mod make10search;
-mod utils;
-mod next_permutation;
+pub mod make10search;
+pub mod utils;
+pub mod permutation;
 
 use wasm_bindgen::prelude::*;
 

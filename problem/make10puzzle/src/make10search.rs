@@ -1,12 +1,16 @@
+use crate::permutation;
 use anyhow::{ensure, Result};
 
-pub fn brute_force(numbers: Vec<i32>) -> Result<Vec<String>, anyhow::Error> {
+pub fn brute_force(mut numbers: Vec<i32>) -> Result<Vec<String>, anyhow::Error> {
     ensure!(numbers.len() == 4, "[ERROR] Numbers length is not 4");
     ensure!(
         0 <= *numbers.iter().min().expect("[ERROR] min() is panicked!")
             && *numbers.iter().max().expect("[ERROR] max() is panicked!") < 10,
         "[ERROR] Numbers should be between 0 and 9"
     );
+    while permutation::next_permutation(&mut numbers) {
+        let mut _crr_numbers = numbers.clone();
+    }
 
     return Ok(vec!["AAA".to_string()]);
 }
