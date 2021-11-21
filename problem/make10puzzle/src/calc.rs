@@ -1,5 +1,4 @@
 use anyhow::{bail, Result};
-use std::cmp;
 
 pub struct RpnCalculator(bool);
 
@@ -8,7 +7,7 @@ impl RpnCalculator {
         RpnCalculator(false)
     }
 
-    pub fn eval(&self, tokens_input: &Vec<&str>) -> Result<i64> {
+    pub fn eval(&self, tokens_input: &Vec<&str>) -> Result<f64> {
         let mut tokens = tokens_input.clone();
         tokens.reverse();
         let mut stack = Vec::new();
@@ -17,39 +16,21 @@ impl RpnCalculator {
         while let Some(token) = tokens.pop() {
             pos += 1;
 
-            if let Ok(x) = token.parse::<i64>() {
+            if let Ok(x) = token.parse::<f64>() {
                 stack.push(x);
             } else if stack.len() >= 2 {
                 let y = stack.pop().expect("invalid syntax");
                 let x = stack.pop().expect("invalid syntax");
 
                 let res = match token {
-                    "+" => match x.checked_add(y) {
-                        Some(z) => z,
-                        None => bail!("overflow"),
-                    },
-                    "-" => match x.checked_sub(y) {
-                        Some(z) => z,
-                        None => bail!("overflow"),
-                    },
-                    "*" => match x.checked_mul(y) {
-                        Some(z) => z,
-                        None => bail!("overflow"),
-                    },
+                    "+" =>  x+y,
+                    "-" =>x-y,
+                    "*" => x*y,
                     "/" => {
-                        if y == 0 {
+                        if y == 0.0 {
                             bail!("division by zero");
                         }
-                        if cmp::min(x, y) == i64::MIN && cmp::max(x, y) == -1 {
-                            bail!("overflow");
-                        }
                         x / y
-                    }
-                    "%" => {
-                        if y <= 0 {
-                            bail!("division by negative");
-                        }
-                        x % y
                     }
                     _ => bail!("invalid token at {}", pos),
                 };
@@ -123,22 +104,21 @@ mod tests {
     #[test]
     fn test_rpn_ok() {
         let calc = RpnCalculator::new();
-        assert_eq!(calc.eval(&vec!["5"]).unwrap(), 5);
-        assert_eq!(calc.eval(&vec!["50"]).unwrap(), 50);
-        assert_eq!(calc.eval(&vec!["-50"]).unwrap(), -50);
+        assert_eq!(calc.eval(&vec!["5"]).unwrap(), 5.0);
+        assert_eq!(calc.eval(&vec!["50"]).unwrap(), 50.0);
+        assert_eq!(calc.eval(&vec!["-50"]).unwrap(), -50.0);
 
-        assert_eq!(calc.eval(&vec!["2", "3", "+"]).unwrap(), 5);
-        assert_eq!(calc.eval(&vec!["2", "3", "*"]).unwrap(), 6);
-        assert_eq!(calc.eval(&vec!["2", "3", "-"]).unwrap(), -1);
-        assert_eq!(calc.eval(&vec!["2", "3", "/"]).unwrap(), 0);
-        assert_eq!(calc.eval(&vec!["2", "3", "%"]).unwrap(), 2);
+        assert_eq!(calc.eval(&vec!["2", "3", "+"]).unwrap(), 5.0);
+        assert_eq!(calc.eval(&vec!["2", "3", "*"]).unwrap(), 6.0);
+        assert_eq!(calc.eval(&vec!["2", "3", "-"]).unwrap(), -1.0);
+        assert_eq!(calc.eval(&vec!["2", "3", "/"]).unwrap(), 2.0/3.0);
         assert_eq!(
             calc.eval(&vec!["1", "2", "+", "3", "4", "+", "*"]).unwrap(),
-            21
+            21.0
         );
         assert_eq!(
             calc.eval(&vec!["4", "3", "1", "/", "*", "2", "-"]).unwrap(),
-            10
+            10.0
         );
     }
 
@@ -148,12 +128,6 @@ mod tests {
         assert!(calc.eval(&vec!["1", "1"]).is_err());
         assert!(calc.eval(&vec!["1", "1", "^"]).is_err());
         assert!(calc.eval(&vec!["1", "1", "-", "+"]).is_err());
-        assert!(calc.eval(&vec!["9223372036854775808"]).is_err());
-        assert!(calc.eval(&vec!["9223372036854775807", "1", "+"]).is_err());
-        assert!(calc.eval(&vec!["-9223372036854775808", "1", "-"]).is_err());
-        assert!(calc.eval(&vec!["9223372036854775807", "2", "*"]).is_err());
-        assert!(calc.eval(&vec!["-9223372036854775808", "-1", "/"]).is_err());
-        assert!(calc.eval(&vec!["100", "-1", "%"]).is_err());
     }
 
     #[test]
