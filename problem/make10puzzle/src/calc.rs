@@ -23,9 +23,9 @@ impl RpnCalculator {
                 let x = stack.pop().expect("invalid syntax");
 
                 let res = match token {
-                    "+" =>  x+y,
-                    "-" =>x-y,
-                    "*" => x*y,
+                    "+" => x + y,
+                    "-" => x - y,
+                    "*" => x * y,
                     "/" => {
                         if y == 0.0 {
                             bail!("division by zero");
@@ -71,12 +71,14 @@ impl RpnCalculator {
             } else if infix.len() >= 2 {
                 let mut y = infix.pop().expect("invalid syntax");
                 let mut x = infix.pop().expect("invalid syntax");
-                if token == "*" || token == "/" {
+                if token != "+" {
                     // 括弧をつける
-                    if self.is_need_paren(x.clone(), false)
-                        || self.is_need_paren(x.chars().rev().collect::<String>(), true)
-                    {
-                        x = format!("({})", x);
+                    if token == "*" || token == "/" {
+                        if self.is_need_paren(x.clone(), false)
+                            || self.is_need_paren(x.chars().rev().collect::<String>(), true)
+                        {
+                            x = format!("({})", x);
+                        }
                     }
                     if self.is_need_paren(y.clone(), false)
                         || self.is_need_paren(y.chars().rev().collect::<String>(), true)
@@ -111,7 +113,7 @@ mod tests {
         assert_eq!(calc.eval(&vec!["2", "3", "+"]).unwrap(), 5.0);
         assert_eq!(calc.eval(&vec!["2", "3", "*"]).unwrap(), 6.0);
         assert_eq!(calc.eval(&vec!["2", "3", "-"]).unwrap(), -1.0);
-        assert_eq!(calc.eval(&vec!["2", "3", "/"]).unwrap(), 2.0/3.0);
+        assert_eq!(calc.eval(&vec!["2", "3", "/"]).unwrap(), 2.0 / 3.0);
         assert_eq!(
             calc.eval(&vec!["1", "2", "+", "3", "4", "+", "*"]).unwrap(),
             21.0
@@ -132,17 +134,21 @@ mod tests {
 
     #[test]
     fn test_rpn_to_infix() {
+        let calc = RpnCalculator::new();
         {
-            let calc = RpnCalculator::new();
             let rpn = vec!["4", "3", "1", "/", "*", "2", "-"].join(" ");
             let infix = calc.rpn_to_infix(rpn);
             assert_eq!(infix.unwrap(), "4 * 3 / 1 - 2".to_string());
         }
         {
-            let calc = RpnCalculator::new();
             let rpn = vec!["6", "1", "-", "1", "1", "+", "*"].join(" ");
             let infix = calc.rpn_to_infix(rpn);
             assert_eq!(infix.unwrap(), "(6 - 1) * (1 + 1)".to_string());
+        }
+        {
+            let rpn = vec!["4", "1", "+", "1", "6", "-", "-"].join(" ");
+            let infix = calc.rpn_to_infix(rpn);
+            assert_eq!(infix.unwrap(), "4 + 1 - (1 - 6)".to_string());
         }
     }
 }
