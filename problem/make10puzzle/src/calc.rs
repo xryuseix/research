@@ -69,6 +69,18 @@ impl RpnCalculator {
         Ok(stack[0])
     }
 
+    // 式FにCをかける/割る時，Fの先頭と末尾に括弧が必要かどうか判定する
+    fn is_need_paren(&self, formula: String, rev: bool) -> bool {
+        for token in formula.chars() {
+            if token == '+' || token == '-' {
+                return true;
+            } else if (!rev && token == '(') || (rev && token == ')') {
+                return false;
+            }
+        }
+        false
+    }
+
     // RPNを中置記法に変換する
     pub fn rpn_to_infix(&self, rpn_formula: String) -> Result<String> {
         let mut infix: Vec<String> = Vec::new();
@@ -76,8 +88,21 @@ impl RpnCalculator {
             if let Ok(_num) = token.parse::<i64>() {
                 infix.push(token.to_string());
             } else if infix.len() >= 2 {
-                let y = infix.pop().expect("invalid syntax");
-                let x = infix.pop().expect("invalid syntax");
+                let mut y = infix.pop().expect("invalid syntax");
+                let mut x = infix.pop().expect("invalid syntax");
+                if token == "*" || token == "/" {
+                    // 括弧をつける
+                    if self.is_need_paren(x.clone(), false)
+                        || self.is_need_paren(x.chars().rev().collect::<String>(), true)
+                    {
+                        x = format!("({})", x);
+                    }
+                    if self.is_need_paren(y.clone(), false)
+                        || self.is_need_paren(y.chars().rev().collect::<String>(), true)
+                    {
+                        y = format!("({})", y);
+                    }
+                }
                 let xy = format!("{} {} {}", x, token, y);
                 infix.push(xy);
             } else {
@@ -133,9 +158,17 @@ mod tests {
 
     #[test]
     fn test_rpn_to_infix() {
-        let calc = RpnCalculator::new();
-        let rpn = vec!["4", "3", "1", "/", "*", "2", "-"].join(" ");
-        let infix = calc.rpn_to_infix(rpn);
-        assert_eq!(infix.unwrap(), "4 * 3 / 1 - 2".to_string());
+        {
+            let calc = RpnCalculator::new();
+            let rpn = vec!["4", "3", "1", "/", "*", "2", "-"].join(" ");
+            let infix = calc.rpn_to_infix(rpn);
+            assert_eq!(infix.unwrap(), "4 * 3 / 1 - 2".to_string());
+        }
+        {
+            let calc = RpnCalculator::new();
+            let rpn = vec!["6", "1", "-", "1", "1", "+", "*"].join(" ");
+            let infix = calc.rpn_to_infix(rpn);
+            assert_eq!(infix.unwrap(), "(6 - 1) * (1 + 1)".to_string());
+        }
     }
 }
