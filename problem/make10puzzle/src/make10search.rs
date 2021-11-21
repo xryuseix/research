@@ -35,11 +35,14 @@ pub fn brute_force(numbers: Vec<i32>) -> Result<Vec<String>, anyhow::Error> {
         numbers_and_ops.sort();
         while permutation::next_permutation(&mut numbers_and_ops) {
             let rpn = calc::RpnCalculator::new();
-            let result = match rpn.eval(&numbers_and_ops) {
-                Ok(ans) => ans.to_string(),
-                Err(_e) => "[ERROR]".to_string(),
+            let result: f64 = match rpn.eval(&numbers_and_ops) {
+                Ok(ans) => ans,
+                Err(_e) => std::f64::MAX,
             };
-            if result == "10" {
+            if result == std::f64::MAX {
+                continue;
+            }
+            if (result - 10.0).abs() <= f64::EPSILON {
                 // RPNを中置記法に変換する
                 let tmp = numbers_and_ops.clone().into_iter().collect::<String>();
                 let formula: String = tmp
@@ -83,20 +86,30 @@ mod tests {
             expect.sort();
             assert_eq!(brute_force(vec![9, 9, 9, 9]).unwrap(), expect);
         }
-        // {
-        //     let mut expect = vec![
-        //         "(1 + 8) * 2 - 8".to_string(),
-        //         "2 * (1 + 8) - 8".to_string(),
-        //         "2 * (8 + 1) - 8".to_string(),
-        //         "(8 + 1) * 2 - 8".to_string(),
-        //         "(1 + 2 / 8) * 8".to_string(),
-        //         "(2 / 8 + 1) * 8".to_string(),
-        //         "8 * (1 + 2 / 8)".to_string(),
-        //         "8 * (2 / 8 + 1)".to_string(),
-        //     ];
-        //     expect.sort();
-        //     assert_eq!(brute_force(vec![1, 2, 8, 8]).unwrap(), expect);
-        // }
+        {
+            let mut expect = vec![
+                "(1 + 8) * 2 - 8".to_string(),
+                "2 * (1 + 8) - 8".to_string(),
+                "2 * (8 + 1) - 8".to_string(),
+                "(8 + 1) * 2 - 8".to_string(),
+                "(1 + 2 / 8) * 8".to_string(),
+                "(2 / 8 + 1) * 8".to_string(),
+                "8 * (1 + 2 / 8)".to_string(),
+                "8 * (2 / 8 + 1)".to_string(),
+            ];
+            expect.sort();
+            assert_eq!(brute_force(vec![1, 2, 8, 8]).unwrap(), expect);
+        }
+        {
+            let mut expect = vec![
+                "(1 + 7 / 3) * 3".to_string(),
+                "3 * (1 + 7 / 3)".to_string(),
+                "3 * (7 / 3 + 1)".to_string(),
+                "(7 / 3 + 1) * 3".to_string(),
+            ];
+            expect.sort();
+            assert_eq!(brute_force(vec![7, 3, 3, 1]).unwrap(), expect);
+        }
     }
     #[test]
     fn test_brute_force_ng() {
