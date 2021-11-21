@@ -9,9 +9,7 @@ import * as wasm from "calculator";
 import calcStyles from "./calculator.module.scss";
 import gamingStyles from "../styles/gaming.module.css";
 
-type Props = {
-  title: string;
-};
+type Props = {};
 
 interface State {
   formula: string;
