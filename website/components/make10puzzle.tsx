@@ -60,19 +60,19 @@ class Make10Form extends React.Component<{}, State> {
           </h1>
           <figure className={`${styles.onboard_text} ${styles.quote}`}>
             <p>
-              テンパズル（10パズル）は、4桁の数字を一桁の数字4つとみなし、これに四則演算などを用いて10を作る遊び。メイクテン（make10）とも呼ばれる。
-            </p>
-            <figcaption>
+              テンパズル（10パズル）は、4桁の数字を一桁の数字4つとみなし、これに四則演算などを用いて10を作る遊び。
+              <br />
               <a
                 href="https://ja.wikipedia.org/wiki/%E3%83%86%E3%83%B3%E3%83%91%E3%82%BA%E3%83%AB"
                 className={styles.quote_link}
+                rel="noopener noreferrer"
               >
                 —Wikipedia, <cite>テンパズル</cite>
               </a>
-            </figcaption>
+            </p>
           </figure>
           <div>
-            <div>
+            <div className={styles.inputs}>
               {[...Array(4)].map((_v, idx) => (
                 <input
                   type="text"
@@ -84,11 +84,9 @@ class Make10Form extends React.Component<{}, State> {
                   className={styles.number}
                 />
               ))}
-              <div>
+              <div className={`${styles.ans} ${styles.onboard_text}`}>
                 {this.state.ans.map((ans) => (
-                  <p key={ans} className={`${styles.onboard_text}`}>
-                    {ans}
-                  </p>
+                  <p key={ans}>{ans}</p>
                 ))}
               </div>
             </div>

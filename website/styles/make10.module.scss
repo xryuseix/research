@@ -1,0 +1,24 @@
+/** @format */
+$white: rgba(255, 255, 255, 0.3);
+
+.body {
+  background: linear-gradient(45deg, #fc466b, #3f5efb);
+  height: 100%;
+  font-family: "Montserrat", sans-serif;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+
+.container {
+  display: inline-block;
+  text-align: center;
+  width: 70%;
+  position: relative;
+}
+
+@media screen and (max-width: 750px) {
+  .container {
+    width: 90%;
+  }
+}

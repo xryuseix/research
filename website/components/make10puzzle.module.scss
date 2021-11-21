@@ -6,7 +6,7 @@ $white: rgba(255, 255, 255, 0.3);
   font-family: "Montserrat", sans-serif;
   background: $white;
   padding: 3em;
-  transform: translate(0%, 12%);
+  margin: 3em auto;
   border-radius: 20px;
   border-left: 1px solid $white;
   border-top: 1px solid $white;
@@ -17,8 +17,6 @@ $white: rgba(255, 255, 255, 0.3);
   transition: all 0.2s ease-in-out;
   z-index: 1;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
 
   &:focus {
     outline: none;
@@ -82,6 +80,31 @@ $white: rgba(255, 255, 255, 0.3);
       }
     }
   }
+
+  .ans {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    height: 10em;
+    width: 100%;
+    overflow-y: scroll;
+  }
+  .ans > p {
+    margin: 3px auto;
+  }
+
+  @media screen and (max-width: 750px) {
+    .container {
+      margin-top: 1em;
+    }
+    .ans {
+      margin: 10px auto;
+    }
+    .inputs > input {
+      width: 24%;
+      height: auto;
+      margin: 0 1px 0 1px;
+    }
+  }
 }
 
 .drop {
@@ -98,7 +121,7 @@ $white: rgba(255, 255, 255, 0.3);
   &_1 {
     height: 80px;
     width: 80px;
-    top: 7%;
+    top: 3%;
     left: -3%;
     z-index: 0;
   }
@@ -106,15 +129,15 @@ $white: rgba(255, 255, 255, 0.3);
   &_2 {
     height: 80px;
     width: 80px;
-    bottom: -20%;
-    right: -5%;
+    bottom: 3%;
+    right: -3%;
     z-index: 2;
   }
   // 右中央
   &_3 {
     height: 100px;
     width: 100px;
-    bottom: 5%;
+    bottom: 30%;
     right: -5%;
     z-index: 0;
   }
@@ -122,7 +145,7 @@ $white: rgba(255, 255, 255, 0.3);
   &_4 {
     height: 120px;
     width: 120px;
-    top: 5%;
+    top: 1%;
     right: -5%;
     z-index: 2;
   }
