@@ -14,4 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run Tests
-        run: cd problem/calculator && cargo test
+        run: |
+        cd problem
+        cd prime_disassemply_pollard && cargo test && cd ..
+        cd calculator && cargo test && cd ..
+        cd make10puzzle && cargo test && cd ..
