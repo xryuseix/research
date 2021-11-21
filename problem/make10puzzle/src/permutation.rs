@@ -1,4 +1,4 @@
-pub fn next_permutation(array: &mut Vec<i32>) -> bool {
+pub fn next_permutation(array: &mut Vec<&str>) -> bool {
     if array.len() < 2 {
         return false;
     }
@@ -28,15 +28,15 @@ mod tests {
     use super::*;
     #[test]
     fn next_permutation_ok() {
-        let mut data: Vec<i32> = vec![1, 2, 3];
+        let mut data: Vec<&str> = vec!["1", "2", "3"];
         let mut c = 0;
         while next_permutation(&mut data) {
             match c {
-                0 => assert_eq!(&data, &[1, 3, 2]),
-                1 => assert_eq!(&data, &[2, 1, 3]),
-                2 => assert_eq!(&data, &[2, 3, 1]),
-                3 => assert_eq!(&data, &[3, 1, 2]),
-                4 => assert_eq!(&data, &[3, 2, 1]),
+                0 => assert_eq!(&data, &["1", "3", "2"]),
+                1 => assert_eq!(&data, &["2", "1", "3"]),
+                2 => assert_eq!(&data, &["2", "3", "1"]),
+                3 => assert_eq!(&data, &["3", "1", "2"]),
+                4 => assert_eq!(&data, &["3", "2", "1"]),
                 _ => {}
             }
             c += 1;
