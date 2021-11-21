@@ -33,21 +33,7 @@ class Make10Form extends React.Component<{}, State> {
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const id = event.target.id;
     const num = event.target.value;
-    const id2idx = (id: string) => {
-      switch (id) {
-        case "text0":
-          return 0;
-        case "text1":
-          return 1;
-        case "text2":
-          return 2;
-        case "text3":
-          return 3;
-        default:
-          return 0;
-      }
-    };
-    const idx = id2idx(id);
+    const idx = id.match(/[0123]{1}/) ? +id : 0;
     let currentNumbers = this.state.numbers;
     currentNumbers[idx] = num;
     this.setState({ numbers: currentNumbers });
@@ -68,41 +54,23 @@ class Make10Form extends React.Component<{}, State> {
     return (
       <>
         <div>
+          {[...Array(4)].map((_v, idx) => (
+            <>
+              {console.log(idx)}
+              <input
+                type="text"
+                value={this.state.numbers[idx]}
+                maxLength={1}
+                id={`${idx}`}
+                key={`${idx}`}
+                onChange={this.handleChange}
+              />
+            </>
+          ))}
           <div>
-            
-            <input
-              type="text"
-              value={this.state.numbers[0]}
-              maxLength={1}
-              id="text0"
-              onChange={this.handleChange}
-            />
-            <input
-              type="text"
-              value={this.state.numbers[1]}
-              maxLength={1}
-              id="text1"
-              onChange={this.handleChange}
-            />
-            <input
-              type="text"
-              value={this.state.numbers[2]}
-              maxLength={1}
-              id="text2"
-              onChange={this.handleChange}
-            />
-            <input
-              type="text"
-              value={this.state.numbers[3]}
-              maxLength={1}
-              id="text3"
-              onChange={this.handleChange}
-            />
-            <div>
-              {this.state.ans.map((ans) => (
-                <p key={ans}>{ans}</p>
-              ))}
-            </div>
+            {this.state.ans.map((ans) => (
+              <p key={ans}>{ans}</p>
+            ))}
           </div>
         </div>
       </>
