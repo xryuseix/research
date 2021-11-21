@@ -81,7 +81,7 @@ class Make10Form extends React.Component<{}, State> {
             />
             <div>
               {this.state.ans.map((ans) => (
-                <p>{ans}</p>
+                <p key={ans}>{ans}</p>
               ))}
             </div>
           </div>
