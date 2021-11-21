@@ -2,6 +2,7 @@
 
 import React from "react";
 import * as wasm from "make10puzzle";
+import styles from "./make10puzzle.module.scss";
 
 type Props = {};
 
@@ -52,28 +53,55 @@ class Make10Form extends React.Component<{}, State> {
 
   render() {
     return (
-      <>
-        <div>
-          {[...Array(4)].map((_v, idx) => (
-            <>
-              {console.log(idx)}
-              <input
-                type="text"
-                value={this.state.numbers[idx]}
-                maxLength={1}
-                id={`${idx}`}
-                key={`${idx}`}
-                onChange={this.handleChange}
-              />
-            </>
-          ))}
+      <div className={`${styles.body}`}>
+        <div className={`${styles.container}`}>
+          <h1 className={`${styles.onboard_text} ${styles.title}`}>
+            Make 10 Puzzle
+          </h1>
+          <figure className={`${styles.onboard_text} ${styles.quote}`}>
+            <p>
+              テンパズル（10パズル）は、4桁の数字を一桁の数字4つとみなし、これに四則演算などを用いて10を作る遊び。メイクテン（make10）とも呼ばれる。
+            </p>
+            <figcaption>
+              <a
+                href="https://ja.wikipedia.org/wiki/%E3%83%86%E3%83%B3%E3%83%91%E3%82%BA%E3%83%AB"
+                className={styles.quote_link}
+              >
+                —Wikipedia, <cite>テンパズル</cite>
+              </a>
+            </figcaption>
+          </figure>
           <div>
-            {this.state.ans.map((ans) => (
-              <p key={ans}>{ans}</p>
-            ))}
+            <div>
+              {[...Array(4)].map((_v, idx) => (
+                <input
+                  type="text"
+                  value={this.state.numbers[idx]}
+                  maxLength={1}
+                  id={`${idx}`}
+                  key={`${idx}`}
+                  onChange={this.handleChange}
+                  className={styles.number}
+                />
+              ))}
+              <div>
+                {this.state.ans.map((ans) => (
+                  <p key={ans} className={`${styles.onboard_text}`}>
+                    {ans}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </>
+        <div className={styles.drops}>
+          <div className={`${styles.drop} ${styles.drop_1}`}></div>
+          <div className={`${styles.drop} ${styles.drop_2}`}></div>
+          <div className={`${styles.drop} ${styles.drop_3}`}></div>
+          <div className={`${styles.drop} ${styles.drop_4}`}></div>
+          <div className={`${styles.drop} ${styles.drop_5}`}></div>
+        </div>
+      </div>
     );
   }
 }
