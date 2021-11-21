@@ -26,6 +26,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import CodeIcon from "@mui/icons-material/Code";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import ExtensionIcon from "@mui/icons-material/Extension";
 
 const titleStyle: { [key: string]: string | number } = {
   textTransform: "none",
@@ -115,6 +116,7 @@ const MenuBar: FC = ({ children }) => {
               backgroundColor: "#f5f5f5",
             },
           }}
+          style={{ marginLeft: "10px" }}
         >
           <LinkListItem href="/">
             <ListItemIcon>
@@ -162,6 +164,16 @@ const MenuBar: FC = ({ children }) => {
               primary="Calculator"
               secondary="Computing with WebAssembly"
               style={{ width: "13em" }}
+            />
+          </LinkListItem>
+          <LinkListItem href="/apps/make10">
+            <ListItemIcon>
+              <ExtensionIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Make10Puzzle"
+              secondary="(7/3+1)*3=10"
+              style={{ width: "0em" }}
             />
           </LinkListItem>
         </List>
