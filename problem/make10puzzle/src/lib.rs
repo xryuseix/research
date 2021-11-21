@@ -1,6 +1,7 @@
 pub mod make10search;
 pub mod utils;
 pub mod permutation;
+pub mod calc;
 
 use wasm_bindgen::prelude::*;
 
