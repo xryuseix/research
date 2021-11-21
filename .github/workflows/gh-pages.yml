@@ -26,9 +26,8 @@ jobs:
       - name: Install Dependencies
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-          cd problem/calculator && wasm-pack build
-          cd ../../website && yarn install
-          cp -r ../problem/calculator/pkg/ node_modules/calculator/
+          cd website
+          ./develop.sh
       - name: Build
         run: cd website && yarn build && yarn export
       - name: Deploy
