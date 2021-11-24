@@ -69,16 +69,24 @@ $white: rgba(255, 255, 255, 0.3);
     transition: all 0.2s ease-in-out;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     text-align: center;
+    outline: none;
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
       box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
     }
-    &[type="text"] {
+    &[type="number"] {
       &:focus {
-        background: rgba(255, 255, 255, 0.1);
-        box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.3);
       }
     }
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 
   .ans {

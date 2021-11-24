@@ -75,7 +75,7 @@ class Make10Form extends React.Component<{}, State> {
             <div className={styles.inputs}>
               {[...Array(4)].map((_v, idx) => (
                 <input
-                  type="text"
+                  type="number"
                   value={this.state.numbers[idx]}
                   maxLength={1}
                   id={`${idx}`}
