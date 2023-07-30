@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::io;
+use std::time::Instant;
 
 // verifyed with https://judge.yosupo.jp/submission/64249
 
@@ -110,6 +111,7 @@ fn main() {
         io::stdin().read_line(&mut tmp).expect("");
         tmp.pop();
         let n: i64 = tmp.parse::<i64>().unwrap();
+        let start = Instant::now();
         let ans: HashMap<i64, i32> = match cache.contains_key(&n) {
             true => cache.get(&n).unwrap().clone(),
             false => {
@@ -118,18 +120,19 @@ fn main() {
                 primes
             }
         };
+        let end = start.elapsed();
         let mut ans_vec:Vec<i64> = Vec::new();
         for (prime, num) in &ans {
             for _j in 0..*num {
                 ans_vec.push(*prime);
             }
         }
-        print!("{}", ans_vec.len());
+        print!("size: {}, prime: [", ans_vec.len());
         ans_vec.sort();
         for prime in ans_vec {
             print!(" {}", prime);
         }
-        println!("");
+        println!(" ] (elapsed: {:.3}ms)", end.as_secs_f64() * 1000.0);
     }
 }
 
