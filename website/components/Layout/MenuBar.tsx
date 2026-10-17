@@ -1,186 +1,175 @@
-/** @format */
-
-import { FC } from "react";
-import React from "react";
-
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import { listItemClasses } from "@mui/material/ListItem";
-import ListItem, { ListItemProps } from "@mui/material/ListItem";
+import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-
-import Button from "@material-ui/core/Button";
-import Drawer from "@material-ui/core/Drawer";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-
-import HomeIcon from "@material-ui/icons/Home";
+import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import InfoIcon from "@mui/icons-material/Info";
 import CodeIcon from "@mui/icons-material/Code";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import ExtensionIcon from "@mui/icons-material/Extension";
 
-const titleStyle: { [key: string]: string | number } = {
-  textTransform: "none",
-  fontWeight: 600,
-  fontSize: "1.2em",
-  marginLeft: "1em",
+type NavigationItem = {
+  href: string;
+  label: string;
+  description?: string;
+  icon: ReactNode;
 };
+const home: NavigationItem = { href: "/", label: "Home", icon: <HomeIcon /> };
+const info: NavigationItem[] = [
+  {
+    href: "/info/tech",
+    label: "Tech",
+    description: "このサイトを構成する技術",
+    icon: <CodeIcon />,
+  },
+  {
+    href: "https://github.com/xryuseix/research",
+    label: "Repository",
+    description: "xryuseix/research",
+    icon: <GitHubIcon />,
+  },
+];
+const apps: NavigationItem[] = [
+  {
+    href: "/apps/calc",
+    label: "Calculator",
+    description: "Computing with WebAssembly",
+    icon: <CalculateIcon />,
+  },
+  {
+    href: "/apps/make10",
+    label: "Make10Puzzle",
+    description: "(7/3+1)*3=10",
+    icon: <ExtensionIcon />,
+  },
+];
 
-type LinkListItemProps = Omit<
-  ListItemProps<"a", { href: string }>,
-  "component" | "button"
->;
-
-const LinkListItem = React.forwardRef<HTMLAnchorElement, LinkListItemProps>(
-  function LinkListItem(props, forwardedRef) {
-    const { href, ...other } = props;
-    if (href.startsWith("http")) {
-      return (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none", color: "#212121" }}
-        >
-          <ListItem component="a" button ref={forwardedRef} {...other} />
-        </a>
-      );
-    } else {
-      return (
-        <Link href={href} passHref>
-          <ListItem component="a" button ref={forwardedRef} {...other} />
-        </Link>
-      );
-    }
+function NavigationLink({
+  item,
+  onNavigate,
+}: {
+  item: NavigationItem;
+  onNavigate: () => void;
+}) {
+  const content = (
+    <>
+      <ListItemIcon>{item.icon}</ListItemIcon>
+      <ListItemText primary={item.label} secondary={item.description} />
+    </>
+  );
+  if (item.href.startsWith("https://")) {
+    return (
+      <ListItemButton
+        component="a"
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onNavigate}
+      >
+        {content}
+      </ListItemButton>
+    );
   }
-);
+  return (
+    <ListItemButton component={Link} href={item.href} onClick={onNavigate}>
+      {content}
+    </ListItemButton>
+  );
+}
 
-const MenuBar: FC = ({ children }) => {
-  // Drawer の開閉
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
-  };
-
-  // ネストされたリスト の開閉
-  const [open, setOpen] = React.useState(true);
-  const handleClick = () => {
-    setOpen(!open);
-  };
+export default function MenuBar({ children }: { children?: ReactNode }) {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(true);
+  const closeDrawer = () => setDrawerOpen(false);
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color="inherit">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={handleDrawerToggle}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Link href="/" passHref>
-              <Button color="inherit" style={titleStyle}>
-                Research Page
-              </Button>
-            </Link>
-          </Toolbar>
-        </AppBar>
-      </Box>
-
-      <Drawer
-        variant="temporary"
-        open={drawerOpen}
-        onClose={handleDrawerToggle}
-      >
+      <AppBar position="static" color="inherit">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="メニューを開く"
+            aria-expanded={drawerOpen}
+            aria-controls={drawerOpen ? "site-navigation" : undefined}
+            sx={{ mr: 2 }}
+            onClick={() => setDrawerOpen(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Button
+            component={Link}
+            href="/"
+            color="inherit"
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+              fontSize: "1.2em",
+              ml: "1em",
+            }}
+          >
+            Research Page
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="temporary" open={drawerOpen} onClose={closeDrawer}>
         <List
-          sx={{
-            [`& .active, & .${listItemClasses.root}:hover`]: {
-              fontWeight: "bold",
-              "& svg": {
-                fill: "#474b42",
-              },
-              backgroundColor: "#f5f5f5",
-            },
-          }}
-          style={{ marginLeft: "10px" }}
+          component="nav"
+          id="site-navigation"
+          aria-label="サイトナビゲーション"
+          sx={{ width: 320, maxWidth: "100vw" }}
         >
-          <LinkListItem href="/">
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" style={{ width: "1em" }} />
-          </LinkListItem>
-          <ListItemButton onClick={handleClick}>
+          <NavigationLink item={home} onNavigate={closeDrawer} />
+          <ListItemButton
+            onClick={() => setInfoOpen((open) => !open)}
+            aria-expanded={infoOpen}
+            aria-controls="info-navigation"
+          >
             <ListItemIcon>
               <InfoIcon />
             </ListItemIcon>
             <ListItemText primary="Info" />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            {infoOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding style={{ marginLeft: "1em" }}>
-              <LinkListItem href="/info/tech">
-                <ListItemIcon>
-                  <CodeIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Tech"
-                  secondary="このサイトを構成する技術"
-                  style={{ width: "0em" }}
+          <Collapse
+            in={infoOpen}
+            timeout="auto"
+            unmountOnExit
+            id="info-navigation"
+          >
+            <List component="div" disablePadding sx={{ pl: 2 }}>
+              {info.map((item) => (
+                <NavigationLink
+                  key={item.href}
+                  item={item}
+                  onNavigate={closeDrawer}
                 />
-              </LinkListItem>
-              <LinkListItem href="https://github.com/xryuseix/research">
-                <ListItemIcon>
-                  <GitHubIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Repository"
-                  secondary="xryuseix/research"
-                  style={{ width: "0em" }}
-                  className="noLinkCSS"
-                />
-              </LinkListItem>
+              ))}
             </List>
           </Collapse>
-          <LinkListItem href="/apps/calc">
-            <ListItemIcon>
-              <CalculateIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Calculator"
-              secondary="Computing with WebAssembly"
-              style={{ width: "13em" }}
+          {apps.map((item) => (
+            <NavigationLink
+              key={item.href}
+              item={item}
+              onNavigate={closeDrawer}
             />
-          </LinkListItem>
-          <LinkListItem href="/apps/make10">
-            <ListItemIcon>
-              <ExtensionIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Make10Puzzle"
-              secondary="(7/3+1)*3=10"
-              style={{ width: "0em" }}
-            />
-          </LinkListItem>
+          ))}
         </List>
       </Drawer>
-      <div>{children}</div>
+      {children}
     </>
   );
-};
-
-export default MenuBar;
+}

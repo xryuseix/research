@@ -1,6 +1,11 @@
 /** @format */
 
-import CalcForm from "../../components/calculator";
+import dynamic from "next/dynamic";
+
+const CalcForm = dynamic(() => import("../../components/calculator"), {
+  ssr: false,
+  loading: () => <p role="status">WebAssemblyを読み込み中…</p>,
+});
 import { Layout } from "../../components/Layout";
 import styles from "../../styles/calc.module.css";
 

@@ -9,13 +9,13 @@ interface Props {
 
 export const siteTitle = "xryuseix Sample Website";
 
-const Header: React.FC<Props> = ({ title, description }: Props) => {
+const Header: React.FC<Props> = ({ title = siteTitle, description }: Props) => {
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="icon" href="/research/favicon.ico" />
-      <meta name="og:title" content={title} />
+      <meta property="og:title" content={title} />
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta

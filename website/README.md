@@ -1,34 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Research website
 
-## Getting Started
+Next.js / React / Material UI と Rust製WebAssemblyを使ったWebサイトです。
+公開パスは /research です。Node.js・npm・Rustはホストへインストールせず、すべてDocker内で実行します。
 
-First, run the development server:
+## 開発
 
-```bash
-npm run dev
-# or
-yarn dev
+Docker Desktop（またはDocker Engine + Compose）が必要です。
+このディレクトリと同じ親ディレクトリに problem/calculator と problem/make10puzzle のRustソースがある構成で使います。
+
+```sh
+docker compose up --build
+# または ./develop.sh
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000/research を開いてください。
+3000番ポートが使用中の場合は WEB_PORT=3001 docker compose up --build で変更できます。
+初回はRust / wasm-packの準備、WebAssemblyのコンパイル、npm ciを行います。
+ソース変更はバインドマウントで反映され、node_modulesと.nextはDockerボリューム内に保存します。
+WebAssemblyはローカルファイル依存としてnpmで管理し、node_modulesへの手動コピーを廃止しました。
+WebpackはWebAssemblyの読み込みに必要なため、開発・ビルドの両方で明示しています。
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 検証と本番ビルド
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```sh
+docker compose run --rm web npm run lint
+docker compose run --rm web npm run typecheck
+docker compose run --rm web npm run build
+docker compose run --rm --service-ports web npm start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+buildは本番サーバー向けです。検証・ビルドと開発サーバーは同時実行せず、開発サーバーを停止してから実行してください。
+静的サイトとして出力する場合は docker compose run --rm web npm run export を実行します（out/に出力）。
 
-## Learn More
+## 依存パッケージの変更
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+docker compose run --rm web npm install パッケージ名@latest
+docker compose run --rm web npm install --save-dev パッケージ名@latest
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+package-lock.jsonもコミットしてください。Dockerイメージと依存ボリュームの更新には以下を実行します。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```sh
+docker compose build --pull web
+docker compose run --rm web npm ci
+docker compose up
+```
 
-## Deploy on Vercel
+Rustソースを変更した場合もイメージを再ビルドしてnpm ciを実行します。
+Rustステージでは最新Rustとの互換性のためwasm-bindgenを更新します。親ディレクトリのRustソース・ロックファイルは変更しません。
+npm依存はpackage-lock.jsonで固定していますが、Rustツールチェーンとwasm-packはイメージの再ビルド時点の版を使用します。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+TypeScript 7の型チェックと、ESLint/Next.js向けTypeScript 6互換APIを公式推奨のnpm aliasで併用しています。
+`npm run typecheck` はTypeScript 7を実行します。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+ESLint 10非対応の間接プラグインを避けるため、Next.jsのCore Web Vitals・React Hooks・TypeScriptのルールを最新プラグインから直接読み込んでいます。
+TypeScriptの併用方式: https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-60
+
+2026-10-17時点のnpm auditでは、本番依存は指摘0件です。開発用の@next/eslint-plugin-next配下（fast-glob → micromatch → braces）にhighが4件残ります。
+bracesのlatest（3.0.3）にも修正版がなく、依存のダウングレードや監査の抑制は行っていません。
