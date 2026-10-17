@@ -29,24 +29,20 @@
 .diagram {
   overflow: hidden;
 }
-.diagram > div {
+.diagramHeader {
   padding: 28px 32px;
   border-bottom: 1px solid var(--line);
 }
-.diagram h2 {
+.diagramHeader h2 {
   font-size: 22px;
   font-weight: 600;
   margin: 10px 0;
 }
-.diagram p {
+.diagramHeader p {
   color: var(--muted);
   font-size: 12px;
 }
-.diagram img {
-  padding: 28px;
-  background: white;
-  width: 100%;
-}
+
 @media (max-width: 1000px) {
   .stack {
     grid-template-columns: 1fr;
@@ -57,10 +53,7 @@
   .stack .number {
     margin-bottom: 16px;
   }
-  .diagram > div {
+  .diagramHeader {
     padding: 24px;
-  }
-  .diagram img {
-    padding: 12px;
   }
 }

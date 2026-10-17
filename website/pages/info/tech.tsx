@@ -1,5 +1,6 @@
 import { Layout } from "../../components/Layout";
 import PageHeading from "../../components/PageHeading";
+import TechnologyDiagram from "../../components/TechnologyDiagram";
 import styles from "../../styles/tech.module.css";
 const stack = [
   {
@@ -40,12 +41,12 @@ export default function Tech() {
         ))}
       </div>
       <section className={"surface " + styles.diagram}>
-        <div>
-          <span className="eyebrow">THE ORIGINAL BLUEPRINT</span>
+        <header className={styles.diagramHeader}>
+          <span className="eyebrow">SITE ARCHITECTURE</span>
           <h2>How it comes together</h2>
-          <p>このサイトの技術構成をまとめたオリジナルの図。</p>
-        </div>
-        <img src="/research/tech.png" alt="このサイトの技術構成図" />
+          <p>ソースコードから公開までの流れ。</p>
+        </header>
+        <TechnologyDiagram />
       </section>
     </Layout>
   );

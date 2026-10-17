@@ -1,0 +1,268 @@
+.diagram {
+  margin: 0;
+  padding: 30px;
+}
+.flow {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.6fr) 40px minmax(
+      125px,
+      1fr
+    ) 40px minmax(140px, 1fr);
+  align-items: center;
+  gap: 14px;
+}
+.source {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fbfcfe;
+  overflow: hidden;
+}
+.repository {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  background: #f4f6fa;
+}
+.repository img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.repository h3 {
+  font-size: 14px;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+.repository span {
+  display: block;
+  font-size: 10px;
+  margin-top: 4px;
+  color: var(--muted);
+}
+.repository:hover span {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.technologyGroup {
+  padding: 16px 18px 20px;
+}
+.technologyGroup + .technologyGroup {
+  border-top: 1px solid var(--line);
+}
+.technologyGroup h4 {
+  margin: 0 0 16px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 600;
+}
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+.technology {
+  position: relative;
+  text-align: center;
+  min-width: 0;
+}
+.logoBox {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.logoBox img {
+  width: 80px;
+  height: 60px;
+  object-fit: contain;
+}
+.technology > span:last-child {
+  font-size: 11px;
+  font-weight: 500;
+}
+.plus {
+  position: absolute;
+  top: 18px;
+  left: -22px;
+  color: var(--muted);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+}
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+}
+.stageLogo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin-bottom: 18px;
+}
+.stage .pagesLogo {
+  width: 140px;
+  max-width: 100%;
+  height: 100px;
+  object-fit: cover;
+  margin: -14px 0 -4px;
+}
+.stage h3 {
+  font-size: 14px;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.stage p,
+.siteLink {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 9px;
+}
+.siteLink:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+}
+.connector > span {
+  font-size: 9px;
+  white-space: nowrap;
+}
+.connector i {
+  position: relative;
+  display: block;
+  height: 1px;
+  width: 100%;
+  background: #8c99ae;
+}
+.connector i::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid #8c99ae;
+  border-top: 1px solid #8c99ae;
+  transform: rotate(45deg);
+}
+.diagram figcaption {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+@media (max-width: 1200px) {
+  .flow {
+    grid-template-columns: minmax(210px, 1.5fr) 28px minmax(
+        110px,
+        1fr
+      ) 28px minmax(120px, 1fr);
+    gap: 10px;
+  }
+  .diagram {
+    padding: 24px;
+  }
+  .repository {
+    padding: 16px;
+  }
+  .stage h3 {
+    font-size: 12px;
+  }
+}
+@media (max-width: 1050px) {
+  .flow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    max-width: 430px;
+    margin: 0 auto;
+  }
+  .source {
+    width: 100%;
+  }
+  .connector {
+    height: 42px;
+    position: relative;
+    justify-content: center;
+    align-self: center;
+  }
+  .connector > span {
+    position: absolute;
+    left: calc(50% + 16px);
+    top: 12px;
+    font-size: 10px;
+  }
+  .connector i {
+    width: 1px;
+    height: 36px;
+  }
+  .connector i::after {
+    right: -3px;
+    top: auto;
+    bottom: 0;
+    transform: rotate(135deg);
+  }
+  .stage {
+    padding: 8px 0;
+  }
+  .stage h3 {
+    font-size: 15px;
+  }
+  .stageLogo {
+    margin-bottom: 14px;
+  }
+  .stage .pagesLogo {
+    width: 160px;
+    height: 110px;
+    margin: -8px 0 -2px;
+  }
+  .stage p,
+  .siteLink {
+    font-size: 11px;
+  }
+  .technologyGroup {
+    padding: 20px 24px;
+  }
+  .pair {
+    gap: 40px;
+  }
+  .plus {
+    left: -27px;
+  }
+  .logoBox {
+    height: 72px;
+  }
+  .logoBox img {
+    width: 90px;
+    height: 68px;
+  }
+}
+@media (max-width: 400px) {
+  .diagram {
+    padding: 20px 16px;
+  }
+  .technologyGroup {
+    padding: 18px;
+  }
+  .logoBox img {
+    width: 76px;
+    height: 60px;
+  }
+  .diagram figcaption {
+    font-size: 10px;
+  }
+}
