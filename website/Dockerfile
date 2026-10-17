@@ -8,6 +8,12 @@ COPY problem/make10puzzle ./make10puzzle
 RUN cd calculator && cargo update -p wasm-bindgen && wasm-pack build --release --target bundler \
     && cd ../make10puzzle && cargo update -p wasm-bindgen && wasm-pack build --release --target bundler
 
+FROM wasm AS rust-tests
+COPY problem/prime_disassemply_pollard ./prime_disassemply_pollard
+RUN cargo test --manifest-path prime_disassemply_pollard/Cargo.toml \
+    && cargo test --manifest-path calculator/Cargo.toml \
+    && cargo test --manifest-path make10puzzle/Cargo.toml
+
 FROM node:24-bookworm-slim AS development
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1

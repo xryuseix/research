@@ -12,6 +12,11 @@
 !problem/make10puzzle/Cargo.lock
 !problem/make10puzzle/src/
 !problem/make10puzzle/src/**
+!problem/prime_disassemply_pollard/
+!problem/prime_disassemply_pollard/Cargo.toml
+!problem/prime_disassemply_pollard/Cargo.lock
+!problem/prime_disassemply_pollard/src/
+!problem/prime_disassemply_pollard/src/**
 **/node_modules
 **/.next
 **/out

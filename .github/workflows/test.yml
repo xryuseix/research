@@ -1,21 +1,40 @@
 name: Test
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 
-env:
-  CARGO_TERM_COLOR: always
+permissions:
+  contents: read
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
+  rust:
+    name: Rust tests
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Run Tests
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Test Rust crates in Docker
+        run: docker build --file website/Dockerfile --target rust-tests --tag research-rust-tests .
+
+  website:
+    name: Website checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Build development image
+        run: docker build --file website/Dockerfile --tag research-website .
+      - name: Check dependencies, lint, types, and production build
         run: |
-          cd problem
-          cd prime_disassemply_pollard && cargo test && cd ..
-          cd calculator && cargo test && cd ..
-          cd make10puzzle && cargo test && cd ..
+          docker run --rm research-website sh -lc '
+            npm audit &&
+            npm run lint &&
+            npm run test:lint-integration &&
+            npm run typecheck &&
+            npm run build
+          '

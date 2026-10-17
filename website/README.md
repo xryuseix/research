@@ -73,3 +73,15 @@ TypeScriptの併用方式: https://devblogs.microsoft.com/typescript/announcing-
 
 - [bracesの監査情報](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)
 - [tinyglobbyの互換API](https://github.com/SuperchupuDev/tinyglobby#usage)
+
+## CI
+
+GitHub ActionsのTestとDeployも同じDockerfileを使用します。
+Testは3つのRustクレートのテストと、Webサイトの監査・lint・lint互換性テスト・型チェック・本番ビルドを実行します。
+DeployはDocker内で静的エクスポートし、生成されたout/をgh-pagesブランチへ公開します。
+
+Rustテストはこのディレクトリで次のコマンドから再現できます。
+
+```sh
+docker build --file Dockerfile --target rust-tests ..
+```
