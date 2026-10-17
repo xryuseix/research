@@ -1,9 +1,70 @@
-/** @format */
-
-.calc {
-  text-align: center;
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(180px, 1fr);
+  gap: 48px;
+  align-items: start;
 }
-
-.calc_frame {
-  display: inline-block;
+.notes {
+  padding: 30px 0;
+  max-width: 300px;
+}
+.notes h2 {
+  font-size: 25px;
+  margin: 14px 0;
+  font-weight: 550;
+}
+.notes p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.95;
+}
+.notes dl {
+  margin: 28px 0;
+}
+.notes dl > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+}
+.notes dt {
+  color: var(--muted);
+}
+.notes dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+.noteBottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 9px;
+  color: var(--muted);
+}
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #419a75;
+}
+@media (max-width: 1050px) {
+  .workspace {
+    gap: 28px;
+  }
+}
+@media (max-width: 650px) {
+  .workspace {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .notes {
+    max-width: none;
+    padding: 24px 4px;
+  }
+  .notes dl {
+    margin: 18px 0;
+  }
 }

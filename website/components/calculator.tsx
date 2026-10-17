@@ -1,96 +1,106 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
+import BackspaceOutlined from "@mui/icons-material/BackspaceOutlined";
 import * as wasm from "calculator";
-import calcStyles from "./calculator.module.scss";
+import styles from "./calculator.module.scss";
 import gamingStyles from "../styles/gaming.module.css";
-
-const buttonRows = [
-  ["(", ")", "%", "/"],
-  ["7", "8", "9", "*"],
-  ["4", "5", "6", "-"],
-  ["1", "2", "3", "+", ""],
-  ["0", "del", ""],
-];
-const modes = [
-  { value: 0, label: "Normal" },
-  { value: 1, label: "Gaming1" },
-  { value: 2, label: "Gaming2" },
+const keys = [
+  "(",
+  ")",
+  "%",
+  "/",
+  "7",
+  "8",
+  "9",
+  "*",
+  "4",
+  "5",
+  "6",
+  "-",
+  "1",
+  "2",
+  "3",
+  "+",
+  "0",
+  "del",
 ];
 const modeClasses = ["", gamingStyles.gaming1, gamingStyles.gaming2];
-
 export default function CalcForm() {
   const [formula, setFormula] = useState("((1+3)*-2)*3");
   const [mode, setMode] = useState(0);
-  const modeClass = modeClasses[mode];
   const answer = formula.trim() ? wasm.calc(formula) : "0";
-
   return (
-    <>
-      <Box sx={{ width: 300, maxWidth: "100%" }}>
-        <Slider
-          aria-label="表示モード"
-          value={mode}
-          min={0}
-          max={2}
-          step={1}
-          marks={modes}
-          onChange={(_, value) => setMode(value as number)}
+    <section
+      aria-label="電卓"
+      className={styles.calculator + " " + modeClasses[mode]}
+    >
+      <div className={styles.top}>
+        <span>THE CALCULATOR</span>
+        <span className={styles.version}>WASM / 01</span>
+      </div>
+      <div className={styles.display}>
+        <label htmlFor="formula">EXPRESSION</label>
+        <input
+          id="formula"
+          aria-label="計算式"
+          type="text"
+          value={formula}
+          autoComplete="off"
+          spellCheck={false}
+          onChange={(event) => setFormula(event.target.value)}
         />
-      </Box>
-      <div className={calcStyles.calculator_frame + " " + modeClass}>
-        <div className={calcStyles.formula}>
-          <input
-            aria-label="計算式"
-            type="text"
-            value={formula}
-            onChange={(event) => setFormula(event.target.value)}
-            className={calcStyles.input + " " + modeClass}
-          />
-          <div className={calcStyles.formula_ans} aria-live="polite">
-            = {answer}
-          </div>
+        <div className={styles.result}>
+          <span>=</span>
+          <output aria-live="polite">{answer}</output>
         </div>
-        <div>
-          {buttonRows.map((row, rowIndex) => (
-            <div key={rowIndex}>
-              {row.map((button, columnIndex) => {
-                const modifier =
-                  button === "+"
-                    ? calcStyles.calc_button_add
-                    : button === "del"
-                      ? calcStyles.calc_button_del
-                      : button === ""
-                        ? calcStyles.calc_button_null
-                        : "";
-                return (
-                  <button
-                    key={columnIndex}
-                    type="button"
-                    disabled={!button}
-                    aria-hidden={!button || undefined}
-                    aria-label={button === "del" ? "一文字削除" : undefined}
-                    className={[
-                      calcStyles.calc_button,
-                      modifier,
-                      modeClass,
-                    ].join(" ")}
-                    onClick={() =>
-                      setFormula((current) =>
-                        button === "del"
-                          ? current.slice(0, -1)
-                          : current + button,
-                      )
-                    }
-                  >
-                    {button}
-                  </button>
-                );
-              })}
-            </div>
+      </div>
+      <div className={styles.keypad}>
+        {keys.map((key) => (
+          <button
+            key={key}
+            type="button"
+            aria-label={key === "del" ? "一文字削除" : key}
+            className={[
+              styles.key,
+              "+-*/%()".includes(key) ? styles.operator : "",
+              key === "+" ? styles.plus : "",
+              key === "0" ? styles.zero : "",
+              key === "del" ? styles.delete : "",
+            ].join(" ")}
+            onClick={() =>
+              setFormula((current) =>
+                key === "del" ? current.slice(0, -1) : current + key,
+              )
+            }
+          >
+            {key === "del" ? (
+              <BackspaceOutlined sx={{ fontSize: 20 }} />
+            ) : key === "*" ? (
+              "×"
+            ) : key === "/" ? (
+              "÷"
+            ) : key === "-" ? (
+              "−"
+            ) : (
+              key
+            )}
+          </button>
+        ))}
+      </div>
+      <div className={styles.modes}>
+        <span>Appearance</span>
+        <div role="group" aria-label="表示モード">
+          {["Normal", "Gaming 1", "Gaming 2"].map((label, index) => (
+            <button
+              key={label}
+              type="button"
+              aria-pressed={mode === index}
+              onClick={() => setMode(index)}
+            >
+              {label}
+            </button>
           ))}
         </div>
       </div>
-    </>
+    </section>
   );
 }

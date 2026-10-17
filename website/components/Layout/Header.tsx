@@ -7,7 +7,7 @@ interface Props {
   description?: string;
 }
 
-export const siteTitle = "xryuseix Sample Website";
+export const siteTitle = "Research — A Personal Lab";
 
 const Header: React.FC<Props> = ({ title = siteTitle, description }: Props) => {
   return (
