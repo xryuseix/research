@@ -7,7 +7,8 @@
     "export": "NEXT_STATIC_EXPORT=1 next build --webpack",
     "start": "next start --hostname 0.0.0.0",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:lint-integration": "node --test tests/next-lint.test.mjs"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -36,5 +37,10 @@
   },
   "engines": {
     "node": ">=24.0.0"
+  },
+  "overrides": {
+    "@next/eslint-plugin-next": {
+      "fast-glob": "npm:tinyglobby@0.2.17"
+    }
   }
 }

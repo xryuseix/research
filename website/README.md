@@ -25,6 +25,8 @@ WebpackはWebAssemblyの読み込みに必要なため、開発・ビルドの�
 ```sh
 docker compose run --rm web npm run lint
 docker compose run --rm web npm run typecheck
+docker compose run --rm web npm run test:lint-integration
+docker compose run --rm web npm audit
 docker compose run --rm web npm run build
 docker compose run --rm --service-ports web npm start
 ```
@@ -57,5 +59,17 @@ TypeScript 7の型チェックと、ESLint/Next.js向けTypeScript 6互換APIを
 ESLint 10非対応の間接プラグインを避けるため、Next.jsのCore Web Vitals・React Hooks・TypeScriptのルールを最新プラグインから直接読み込んでいます。
 TypeScriptの併用方式: https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-60
 
-2026-10-17時点のnpm auditでは、本番依存は指摘0件です。開発用の@next/eslint-plugin-next配下（fast-glob → micromatch → braces）にhighが4件残ります。
-bracesのlatest（3.0.3）にも修正版がなく、依存のダウングレードや監査の抑制は行っていません。
+## 開発依存の監査対応
+
+2026-10-17時点で、本番・開発依存を含む npm audit は指摘0件です。
+
+@next/eslint-plugin-next 16.4.2のfast-glob依存を、package.jsonの限定的なoverridesでtinyglobby 0.2.17へ置き換えています。
+これにより未修正のbracesを含む依存経路（fast-glob → micromatch → braces）を除去しています。
+プラグイン本体やNext.jsの検査ルールは維持しています。
+
+プラグインが使用するglobSyncとonlyDirectoriesの互換性は、実際のESLint実行で検証しています。
+通常のルート指定・ワイルドカード・波括弧・配列・Windows形式の区切り文字で、内部リンクの誤用を検出するテストを含みます。
+プラグインを更新するときは npm run test:lint-integration と npm audit を実行し、上流で依存問題が解決していればoverrideを除去してください。
+
+- [bracesの監査情報](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)
+- [tinyglobbyの互換API](https://github.com/SuperchupuDev/tinyglobby#usage)
